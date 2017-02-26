@@ -1,0 +1,41 @@
+https://www.pagat.com/poker/rules/ranking.html      -- card info
+
+E:\Python27\Lib\site-packages\PyQt4\pyuic4.bat -x C:\Users\Jaishree\Documents\p1\mainwindow.ui -o  C:\Users\Jaishree\Documents\p1\op.py
+
+
+
+#jaishree
+# import os,sys
+# from PyQt4 import QtGui
+# from PyQt4 import QtCore
+
+# class gameWindow (QtGui.QMainWindow) :
+
+# 	def __init__ ( self) :
+
+# 		super (gameWindow, self). __init__()
+		
+# 		#setting position of the window
+# 		self.setGeometry(50,50,500,500)
+		
+# 		#title of the window and icon
+# 		self.setWindowTitle("Texas Hold'em Poker")
+# 		self.setWindowIcon(QtGui.QIcon('logo.jpg'))
+
+# 		pic = QtGui.QLabel(self)
+# 		pic.setGeometry(10, 10, 250, 250)
+# 		#use full ABSOLUTE path to the image, not relative
+# 		pic.setPixmap(QtGui.QPixmap("Images/HJ.png"))
+
+# 		self.show()
+
+		
+
+# #create an application object
+# app = QtGui.QApplication(sys.argv)
+
+# #creating the top level window
+# GUI = gameWindow()
+
+# #exit game on clicking the cross mark of the window only
+# sys.exit(app.exec_())

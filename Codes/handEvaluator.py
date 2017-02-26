@@ -173,10 +173,11 @@ def fullHouse (hand) :
 			cardPair.append(three_of_a_kind)
 			cardPair.append(two_pair)
 		elif (len(two_pair) > 1) :
-			cardPair.
+			# cardPair.   yet to write..........
+			pass
 
-	return cardValue
+	return cardPair
 
 
-hand = ['D4','SA','DA','H4','C4','DA']
+hand = ['C9','HJ','CQ','S10','H10','HQ','D10']
 print threeOfAKind(hand)

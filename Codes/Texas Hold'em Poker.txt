@@ -1,0 +1,5 @@
+pokerHandData.py --- contains all codes for poker hand calculation
+pokerUI.py       --- contains all codes for the UI for the game
+texaspoker.py    --- main game arena
+
+texaspoker.py should make changes in the UI as in add card pics in the community cards and stuffs
