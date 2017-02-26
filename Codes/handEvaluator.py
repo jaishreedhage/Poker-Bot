@@ -19,6 +19,19 @@ cardRank = { '2' : 1,
 			 'K' : 12,
 			 'A' : 13 }
 
+cardValue = { 'A' : 1,
+			  '2' : 2,
+			  '3' : 3,
+			  '4' : 4,
+			  '5' : 5,
+			  '6' : 6,
+			  '7' : 7,
+			  '8' : 8,
+			  '9' : 9,
+			  '10': 10,
+			  'J' : 11,
+			  'Q' : 12,
+			  'K' : 13 }			  
 #card suit
 suit = ['D','H','C','S']
 
@@ -51,7 +64,7 @@ def threeOfAKind (hand) :
 			if (cardValue not in cardPair) :
 				cardPair.append(cardValue)
 
-	return cardValue
+	return cardPair
 
 #checking for 4 of a kind in the hand(and amongst the 7 cards)
 def fourOfAKind (hand) :
@@ -158,25 +171,111 @@ def royalFlush (hand) :
 
 	return royal_flush
 
-#check for full house
-def fullHouse (hand) :
-	noOfCards = len(hand)
-	cardPair = []
-	three_of_a_kind = threeOfAKind(hand)
-	two_pair = twoPair(hand)
-	if (len(three_of_a_kind) == 0) :
-		pass
-	elif (len(three_of_a_kind) == 1) :
-		if (len(two_pair) == 0) :
-			pass
-		elif (len(two_pair) == 1) :
-			cardPair.append(three_of_a_kind)
-			cardPair.append(two_pair)
-		elif (len(two_pair) > 1) :
-			cardPair.
 
-	return cardValue
+#check for a straight given a set of 5 or more cards
+#returning the sequence of consecutive cards if community cards are < 3 in order to inform the bot about the possibility of a straight formation
+#returns the highest straight possible if count of community cards >= 3
+#returns False if no straight is possible
+#handling seperately the case for the straight between [10 J Q K A] seperately
+
+# TODO := Here if i get a [10,A] as my inital cards and i have [Q,K,{Card Set} - {10,J,K,Q,A}] so i want to return the possible straights too
+
+def straight (hand):
+	spl_hand = hand
+	spl_hand = sorted(hand,key = lambda x : cardRank[''.join((list(x))[1:])],reverse = True) #list declared in order to seperately handle [10 J Q K A]
+	hand = sorted(hand,key = lambda x : cardValue[''.join((list(x))[1:])])
+
+	handValue = []
+	handRank = []		#list taken in order to make comparison easier
+	for card in hand:
+		handValue.append(cardValue[''.join((list(card))[1:])])
+
+	for card in spl_hand:
+		handRank.append(cardRank[''.join((list(card))[1:])])
+
+	def evaluateStraight(checkList):
+		count = 0
+		for i in range(0,len(checkList)-1) :
+			if (checkList[i+1] - checkList[i] == 1) :
+				count = count + 1
+			else :
+				break
+		if (count == len(checkList)-1) :
+			return True
+		else :
+			return False
+
+	# Straight of Highest order handled here
+	if(handRank[0:5] == [13, 12, 11, 10, 9]):
+		spl_straight = (spl_hand[0:5])
+		spl_straight.reverse()
+		return spl_straight
+
+	else :
+		straightList = []
+		index = 0
+		straight_flag = 0
+		for i in range(0,(len(hand))%5 + 1):
+			checkList = handValue[i : 5 + i]
+			if (evaluateStraight(checkList) and (checkList > straightList)) :
+				straightList = checkList
+				index = i
+				straight_flag = 1
+
+		if (straight_flag) :
+			return hand[index : 5 + index]
+		else :
+			return False
+
+#check for straight flush in a hand of 5 or more cards
+#returns False if not a straight flush else returns the hand sequence
+#handled the case where i have 2 cards with same number say [CA,HA] on which makes a straight flush and other just a straight. Function returns the hand with straight flush
+#Test case => ['CA', 'HA', 'CK', 'CQ', 'CJ', 'C10', 'H2']
+def straightFlush(hand):
+	temp = []
+	if (straight(hand) == False):
+		flush_suit = flush(hand)
+		for card in hand :
+			if (list(card)[0] == flush_suit) :
+				temp.append(card)
+		return straight(temp)
+	else :
+		hand = straight(hand)
+		if (flush(hand)):
+			return hand
+		else :
+			return False
 
 
-hand = ['D4','SA','DA','H4','C4','DA']
-print threeOfAKind(hand)
+
+def fullHouse(hand):
+	temp = hand
+	three_card_val = threeOfAKind(temp)
+
+	def cardScrapper(card_list,value):
+		temp_list = []
+		for i in range(0,len(card_list)) :
+			if ((card_list[i][1:]) == (value[0])) :
+				temp_list.append(card_list[i])
+		return temp_list
+
+	three_cards = cardScrapper(hand,three_card_val)
+
+	for card in three_cards :
+		temp.remove(card)
+
+	one_pair_val = onePair(temp)
+	one_pair_list = cardScrapper(temp,one_pair_val)
+
+	final_list = three_cards + one_pair_list
+	return final_list
+
+
+#hand = ['D4','SA','DA','H4','C4','DA']
+#hand = ['D1','H2','S5','C4','H3','S6','D7']
+#hand = ['DJ','SA','H10','H7','CK','D4','SQ']
+#hand = ['D10','SA','H5','H7','C6','DJ']
+hand = ['D10','HQ','H10','S10','CQ','HJ','C9']
+
+#print threeOfAKind(hand)
+print fullHouse(hand)
