@@ -31,7 +31,7 @@ cardValue = { 'A' : 1,
 			  '10': 10,
 			  'J' : 11,
 			  'Q' : 12,
-			  'K' : 13 }
+			  'K' : 13 }			  
 #card suit
 suit = ['D','H','C','S']
 
@@ -48,7 +48,6 @@ def highCard (hand) :
 	return cardValue
 
 #checking for 3 of a kind in the hand(and amongst the 7 cards)
-# hand = ['D10','HQ','H10','S10','CQ','HJ','C9']
 def threeOfAKind (hand) :
 	noOfCards = len(hand)
 	cardPair = []
@@ -59,7 +58,7 @@ def threeOfAKind (hand) :
 		for j in range (0,noOfCards) :
 			if (i!=j and hand[i][1:] == hand[j][1:]) :
 				count = count+1
-
+				
 		if (count == 3) :
 			cardValue = hand[i][1:]
 			if (cardValue not in cardPair) :
@@ -98,7 +97,7 @@ def onePair (hand) :
 		for j in range (0,noOfCards) :
 			if (i!=j and hand[i][1:] == hand[j][1:]) :
 				count = count+1
-
+				
 		if (count==2) :
 			cardValue = hand[i][1:]
 			if (not cardValue in cardPair) :
@@ -121,7 +120,7 @@ def twoPair (hand) :
 		for j in range (0,noOfCards) :
 			if (i!=j and hand[i][1:] == hand[j][1:]) :
 				count = count+1
-
+				
 		if (count==2 and pairs < 2) :
 			cardValue = hand[i][1:]
 			if (not cardValue in cardPair) :
@@ -144,7 +143,7 @@ def flush (hand) :
 	noOfCards = len(hand)
 	flushSuit = 'null'
 	for i in range (0,len(suit)) :
-		count = 0
+		count = 0 
 		for j in range (0,noOfCards) :
 			if (suit[i] == hand[j][0]) :
 				count = count + 1
@@ -270,8 +269,6 @@ def fullHouse(hand):
 
 	final_list = three_cards + one_pair_list
 	return final_list
-
-
 
 
 #hand = ['D4','SA','DA','H4','C4','DA']
