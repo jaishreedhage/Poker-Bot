@@ -278,4 +278,4 @@ def fullHouse(hand):
 hand = ['D10','HQ','H10','S10','CQ','HJ','C9']
 
 #print threeOfAKind(hand)
-print fullHouse(hand)
+# print fullHouse(hand)
