@@ -289,6 +289,7 @@ def fullHouse(hand):
 #hand = ['D1','H2','S5','C4','H3','S6','D7']
 #hand = ['DJ','SA','H10','H7','CK','D4','SQ']
 #hand = ['D10','SA','H5','H7','C6','DJ']
+<<<<<<< HEAD
 # hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
 #hand  = ['DA','D7','H6','S8','S9','C10']
 hand = ['CA', 'HA', 'CK', 'C10', 'SK', 'CJ', 'H10']
@@ -299,3 +300,9 @@ print twoPair(hand)
 # print threeOfAKind(hand)
 #print fullHouse(hand)
 #print straight(hand)
+=======
+hand = ['D10','HQ','H10','S10','CQ','HJ','C9']
+
+#print threeOfAKind(hand)
+# print fullHouse(hand)
+>>>>>>> 48a8d354d3503918ac13c974d29f95415c5a4538

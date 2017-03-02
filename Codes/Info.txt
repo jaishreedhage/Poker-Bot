@@ -1,9 +1,47 @@
 https://www.pagat.com/poker/rules/ranking.html      -- card info
-
+------------------------------------------------------------------------------------------------------------------------------------------
 E:\Python27\Lib\site-packages\PyQt4\pyuic4.bat -x C:\Users\Jaishree\Documents\p1\mainwindow.ui -o  C:\Users\Jaishree\Documents\p1\op.py
+------------------------------------------------------------------------------------------------------------------------------------------
+UI funcs used are
+1. StopGame() --- what should this function return and how should it be connected to the app?
+2. NameOfRound()  --- changes the name of the round on UI
+3. GameNumber()   --- changes the game number on UI
+4-14. cc1() .... cc5() , p1c1() .... bc2  ---- change cards 
+15-16. p1OptionsHideShow() ... p2OptionsHideShow()    --- show or hide player1 options
+17-18. setP1Opt1() ... setP2Opt2()     --- set call/check for P1 and P2
+19-20. setP1Opt2() ... setP2Opt2()     --- set bet/raise for P1 and P2
+21-23. p1Money() ... botMoney()    ---update money of all players
+24. PotMoney()  --- update money in Pot
+25. BotPlays()  --- shows what move bot took
+
+26. p1GetRaise() ... p2GetRaise()   --- get bet/raise money enetered in the box on clicking
+27. p1CallCheck()  ... p2CallCheck()   --- yet to be implemented
+28. p1Fold()  ... p2Fold()   --- yet to be implemented
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+TO DO 
+
+1. implement function numbers (1),(26),(27),(28)
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+ASSUMPTIONS
+
+1. Assuming buy-in is $200. Coz it'll be easier if we start with less money.
 
 
 
+----------------------------------------------------------------------------------------------------------------------------------------------
+FUTURE IMPLEMENTATIONS
+
+1. Dialog box to show who won the game.... For now maybe ill use a timer or something.
+2. Show/Hide of player 1 and player 2 cards
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------------------------------
 #jaishree
 # import os,sys
 # from PyQt4 import QtGui
@@ -27,9 +65,7 @@ E:\Python27\Lib\site-packages\PyQt4\pyuic4.bat -x C:\Users\Jaishree\Documents\p1
 # 		#use full ABSOLUTE path to the image, not relative
 # 		pic.setPixmap(QtGui.QPixmap("Images/HJ.png"))
 
-# 		self.show()
-
-		
+# 		self.show()		
 
 # #create an application object
 # app = QtGui.QApplication(sys.argv)
@@ -39,3 +75,14 @@ E:\Python27\Lib\site-packages\PyQt4\pyuic4.bat -x C:\Users\Jaishree\Documents\p1
 
 # #exit game on clicking the cross mark of the window only
 # sys.exit(app.exec_())
+
+
+*********************
+# if __name__ == "__main__":
+#     import sys
+#     app = QtGui.QApplication(sys.argv)
+#     MainWindow = QtGui.QMainWindow()
+#     ui = Ui_MainWindow()
+#     ui.setupUi(MainWindow)
+#     MainWindow.show()
+#     sys.exit(app.exec_())
