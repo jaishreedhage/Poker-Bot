@@ -152,7 +152,7 @@ def twoPair (hand) :
 def flush (hand) :
 	no_of_cards = len(hand)
 	flush_suit = []
-	for i in range (0,len(suit)) :   # QUESTION := what is the suit variable doing here ??
+	for i in range (0,len(suit)) :
 		count = 0
 		for j in range (0,no_of_cards) :
 			if (suit[i] == hand[j][0]) :
@@ -283,7 +283,6 @@ def fullHouse(hand):
 
 	full_house = three_cards + one_pair_list
 	return full_house
-
 
 #hand = ['D4','SA','DA','H4','C4','DA']
 #hand = ['D1','H2','S5','C4','H3','S6','D7']

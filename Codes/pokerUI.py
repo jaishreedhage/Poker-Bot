@@ -153,12 +153,12 @@ class Ui_MainWindow(object):
 
 
 	#initialise the UI --- constant UI components
-	def __init__(self, MainWindow):    
+	def __init__(self, MainWindow):
 
 		#Mainwindow
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
 		MainWindow.resize(930, 722)
-		
+
 
 		#central widget
 		self.centralWidget = QtGui.QWidget(MainWindow)
@@ -245,7 +245,7 @@ class Ui_MainWindow(object):
 		font.setBold(True)
 		font.setWeight(75)
 		self.PotValue.setFont(font)
-		self.PotValue.setObjectName(_fromUtf8("PotValue"))        
+		self.PotValue.setObjectName(_fromUtf8("PotValue"))
 		self.PotValue.setText("POT")
 
 		#stop game button
@@ -257,11 +257,11 @@ class Ui_MainWindow(object):
 		font.setWeight(75)
 		self.stopGame.setFont(font)
 		self.stopGame.setObjectName(_fromUtf8("stopGame"))
-		self.stopGame.setText("STOP GAME")	
-		self.stopGame.clicked.connect(self.StopGame)	
+		self.stopGame.setText("STOP GAME")
+		self.stopGame.clicked.connect(self.StopGame)
 
 
-	
+
 	#initialise the non-constant UI components
 	def setupUi(self,Mainwindow) :
 
@@ -271,7 +271,7 @@ class Ui_MainWindow(object):
 		font = QtGui.QFont()
 		font.setPointSize(11)
 		self.nameOfRound.setFont(font)
-		self.nameOfRound.setObjectName(_fromUtf8("nameOfRound"))  
+		self.nameOfRound.setObjectName(_fromUtf8("nameOfRound"))
 
 		#game number
 		self.gameNumber = QtGui.QLabel(self.centralWidget)
@@ -279,7 +279,7 @@ class Ui_MainWindow(object):
 		font = QtGui.QFont()
 		font.setPointSize(11)
 		self.gameNumber.setFont(font)
-		self.gameNumber.setObjectName(_fromUtf8("numberOfRound"))    
+		self.gameNumber.setObjectName(_fromUtf8("numberOfRound"))
 
 		#community card 1
 		self.communityCard1 = QtGui.QLabel(self.centralWidget)
@@ -368,7 +368,7 @@ class Ui_MainWindow(object):
 		self.botCard2.setText(_fromUtf8(""))
 		self.botCard2.setPixmap(QtGui.QPixmap(_fromUtf8("Images/C2.png")))
 		self.botCard2.setObjectName(_fromUtf8("botCard2"))
-		self.botCard2.setScaledContents(True);     
+		self.botCard2.setScaledContents(True);
 
 
 
@@ -558,7 +558,7 @@ class Ui_MainWindow(object):
 		self.botMoney.setAlignment(QtCore.Qt.AlignCenter)
 		self.botMoney.setObjectName(_fromUtf8("player3Money"))
 
-		
+
 		#money in POT
 		self.potMoney = QtGui.QPushButton(self.centralWidget)
 		self.potMoney.setEnabled(False)
@@ -580,8 +580,5 @@ class Ui_MainWindow(object):
 		"color : rgb(170, 0, 0)\n"
 		""))
 		self.potMoney.setObjectName(_fromUtf8("potMoney"))
-
-
-
 
 		# QtCore.QMetaObject.connectSlotsByName(MainWindow)       ----- wtf is this.??
