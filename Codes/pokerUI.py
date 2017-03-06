@@ -7,6 +7,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+import variables
 from PyQt4 import QtCore, QtGui
 import sys
 import time
@@ -28,7 +29,6 @@ except AttributeError:
 
 
 #some important variables
-STOP = 0
 GAMENUMBER = ''
 
 ####################################################################################################################
@@ -84,7 +84,8 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		print text
 
 	#function to stop game
-	def StopGame(self,app):
+	def StopGame(self):
+		variables.STOP = 1
 		pass
 		##############################################################
 		print "YO YO"
@@ -464,7 +465,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		self.player1Opt2.setFont(font)
 		self.player1Opt2.setObjectName(_fromUtf8("player1Opt2"))
 
-		#player 1 dolloar symbol
+		#player 1 dollar symbol
 		self.dollar1 = QtGui.QLabel(self.centralWidget)
 		self.dollar1.setGeometry(QtCore.QRect(100, 620, 16, 16))
 		font = QtGui.QFont()
@@ -681,8 +682,8 @@ ui.p2c2(app,image_dir+"facedown"+png)
 ui.bc1(app,image_dir+"facedown"+png)
 ui.bc2(app,image_dir+"facedown"+png)
 
-ui.p1OptionsHideShow(app,True);
-ui.p2OptionsHideShow(app,False);
+ui.p1OptionsHideShow(app,False);
+ui.p2OptionsHideShow(app,True);
 
 ui.p1Money(app,str(buy_in))
 ui.p2Money(app,str(buy_in))

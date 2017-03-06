@@ -1,6 +1,6 @@
 from HandEvaluator import *
 from pokerUI import *
-
+import variables
 import random
 import sys
 import time
@@ -17,37 +17,67 @@ def shuffle () :
 	random.shuffle(deck)
 
 
-print STOP,"***"
+print variables.STOP,"***"
 
-while (STOP is 0) :
+while (variables.STOP is 0) :
 
 	shuffle()
 	popped_cards = []
-	print "In while loop :) ", game
+	print "In while loop :) ", game , variables.STOP
 	
 	ui.GameNumber(app,str(game))
-	app.processEvents()
+
 	pop = deck.pop()
 	popped_cards.append(pop)
-	game = game+1
-	# ui.p1c1(MainWindow,image_dir+pop+png)
-	# pop = deck.pop()
-	# popped_cards.append(pop)
-	# ui.p1c2(MainWindow,image_dir+pop+png)
-	# pop = deck.pop()
-	# popped_cards.append(pop)
-	# ui.p2c1(MainWindow,image_dir+pop+png)
-	# pop = deck.pop()
-	# popped_cards.append(pop)
-	# ui.p2c2(MainWindow,image_dir+pop+png)
-	# pop = deck.pop()
-	# popped_cards.append(pop)
-	# ui.bc1(MainWindow,image_dir+pop+png)
-	# pop = deck.pop()
-	# popped_cards.append(pop)
-	# ui.bc2(MainWindow,image_dir+pop+png)
+	ui.p1c1(app,image_dir+pop+png)
+
+	pop = deck.pop()
+	popped_cards.append(pop)
+	ui.p1c2(app,image_dir+pop+png)
+
+	pop = deck.pop()
+	popped_cards.append(pop)
+	ui.p2c1(app,image_dir+pop+png)
+
+	pop = deck.pop()
+	popped_cards.append(pop)
+	ui.p2c2(app,image_dir+pop+png)
+
+	pop = deck.pop()
+	popped_cards.append(pop)
+	ui.bc1(app,image_dir+pop+png)
+
+	pop = deck.pop()
+	popped_cards.append(pop)
+	ui.bc2(app,image_dir+pop+png)
+
+	pop = deck.pop()
+	popped_cards.append(pop)
+	ui.cc1(app,image_dir+pop+png)
+
+	pop = deck.pop()
+	popped_cards.append(pop)
+	ui.cc2(app,image_dir+pop+png)
+
+	pop = deck.pop()
+	popped_cards.append(pop)
+	ui.cc3(app,image_dir+pop+png)
+
+	pop = deck.pop()
+	popped_cards.append(pop)
+	ui.cc4(app,image_dir+pop+png)
+
+	pop = deck.pop()
+	popped_cards.append(pop)
+	ui.cc5(app,image_dir+pop+png)
+
+	app.processEvents()
 
 	time.sleep(2)
 	# print "Hello", STOP
 	# app.processEvents()
+
+if variables.STOP is 1 :
+	sys.exit(app.exec_())
+
 
