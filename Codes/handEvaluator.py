@@ -130,7 +130,6 @@ def twoPair (hand) :
 			if (i!=j and hand[i][1:] == hand[j][1:]) :
 				count = count+1
 
-
 		if (count==2 and count_pair < 2) :
 			card_value = hand[i][1:]
 			if (not card_value in card_pair) :
@@ -288,6 +287,10 @@ def fullHouse(hand):
 #hand = ['D1','H2','S5','C4','H3','S6','D7']
 #hand = ['DJ','SA','H10','H7','CK','D4','SQ']
 #hand = ['D10','SA','H5','H7','C6','DJ']
+# hand = ['D10','HQ','H10','SJ','CQ','HJ','C9']
+
+# print twoPair(hand)
+# print fullHouse(hand)
 # hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
 #hand  = ['DA','D7','H6','S8','S9','C10']
 hand = ['CA', 'HA', 'CK', 'C10', 'SK', 'CJ', 'H10']
@@ -299,7 +302,7 @@ print twoPair(hand)
 #print fullHouse(hand)
 #print straight(hand)
 
-hand = ['D10','HQ','H10','S10','CQ','HJ','C9']
+# hand = ['D10','HQ','H10','S10','CQ','HJ','C9']
 
 #print threeOfAKind(hand)
 # print fullHouse(hand)

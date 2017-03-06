@@ -8,7 +8,12 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+<<<<<<< HEAD
 from PyQt4.QtCore import QThread
+=======
+import sys
+import time
+>>>>>>> 274e621bfd10ef768bcd30b79a56484e47eed11f
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -26,6 +31,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 
+<<<<<<< HEAD
 class MyThread(QThread):
 
     def __init__(self):
@@ -46,51 +52,124 @@ class Ui_MainWindow(object):
 	def StopGame(self,Mainwindow):
         print "**"
 		return 2
+=======
+#some important variables
+STOP = 0
+GAMENUMBER = ''
+
+####################################################################################################################
+
+# class GameThread(QtCore.QThread):
+# 	def __init__(self):
+# 		QtCore.QThread.__init__(self)
+
+# 	def __del__(self):
+# 		self.wait()
+
+# 	def run(self):
+# 		self.emit( QtCore.SIGNAL('update(QString)'), str(GAMENUMBER))
+# 		return
+
+
+class GameThread(QtCore.QThread):
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+		self.emit( QtCore.SIGNAL('update(QString)'), str(GAMENUMBER))
+		return
+
+
+class StopThread(QtCore.QThread):
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+       
+        self.emit( QtCore.SIGNAL('update(QString)'), "IM GONNA STOP NOW KYA?" )
+        return
+
+############################################################################################################################
+
+
+
+class Ui_MainWindow(QtGui.QMainWindow):
+
+	def start1(self,text):
+		print "Add: " + text
+		print GAMENUMBER
+		self.gameNumber.setText(str(text))
+
+	def start(self,text):
+		print text
+
+	#function to stop game
+	def StopGame(self,app):
+		pass
+		##############################################################
+		print "YO YO"
+		self.workThread = StopThread()
+		self.workThread.connect( self.workThread, QtCore.SIGNAL("update(QString)"),self.start)
+		self.workThread.start()
+		###################################################################
+>>>>>>> 274e621bfd10ef768bcd30b79a56484e47eed11f
 
 	#function to change the name of round
-	def NameOfRound(self,Mainwindow,round):
+	def NameOfRound(self,app,round):
 		self.nameOfRound.setText(round)
 
 	#function to change game number
-	def GameNumber(self,Mainwindow,number) :
+	def GameNumber(self,app,number) :
 		self.gameNumber.setText(number)
+		##############################################################
+		# GAMENUMBER = number
+		# self.workThread = GameThread()
+		# self.workThread.connect( self.workThread, QtCore.SIGNAL("update(QString)"),self.start1)
+		# self.workThread.start()
+		##############################################################
 
 	#function to change cards
-	def cc1(self,Mainwindow,value) :
+	def cc1(self,app,value) :
 		self.communityCard1.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
-	def cc2(self,Mainwindow,value) :
+	def cc2(self,app,value) :
 		self.communityCard2.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
-	def cc3(self,Mainwindow,value) :
+	def cc3(self,app,value) :
 		self.communityCard3.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
-	def cc4(self,Mainwindow,value) :
+	def cc4(self,app,value) :
 		self.communityCard4.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
-	def cc5(self,Mainwindow,value) :
+	def cc5(self,app,value) :
 		self.communityCard5.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
-	def p1c1(self,Mainwindow,value) :
+	def p1c1(self,app,value) :
 		self.player1Card1.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
-	def p1c2(self,Mainwindow,value) :
+	def p1c2(self,app,value) :
 		self.player1Card2.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
-	def p2c1(self,Mainwindow,value) :
+	def p2c1(self,app,value) :
 		self.player2Card1.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
-	def p2c2(self,Mainwindow,value) :
+	def p2c2(self,app,value) :
 		self.player2Card2.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
-	def bc1(self,Mainwindow,value) :
+	def bc1(self,app,value) :
 		self.botCard1.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
-	def bc2(self,Mainwindow,value) :
+	def bc2(self,app,value) :
 		self.botCard2.setPixmap(QtGui.QPixmap(_fromUtf8(value)))
 
 	#function to hide or show options
-	def p1OptionsHideShow(self,MainWindow,toggle) :
+	def p1OptionsHideShow(self,app,toggle) :
 		self.player1Opt1.setVisible(toggle)
 		self.player1Opt2.setVisible(toggle)
 		self.player1Opt2Ok.setVisible(toggle)
@@ -98,7 +177,7 @@ class Ui_MainWindow(object):
 		self.dollar1.setVisible(toggle)
 		self.player1bet.setVisible(toggle)
 
-	def p2OptionsHideShow(self,MainWindow,toggle) :
+	def p2OptionsHideShow(self,app,toggle) :
 		self.player2Opt1.setVisible(toggle)
 		self.player2Opt2.setVisible(toggle)
 		self.player2Opt2Ok.setVisible(toggle)
@@ -107,68 +186,68 @@ class Ui_MainWindow(object):
 		self.player2bet.setVisible(toggle)
 
 	#set call/check for player 1 and 2
-	def setP1Opt1(self,Mainwindow,callCheck) :
+	def setP1Opt1(self,app,callCheck) :
 		player1Opt1.setText(callCheck)
 
-	def setP2Opt1(self,Mainwindow,callCheck) :
+	def setP2Opt1(self,app,callCheck) :
 		player2Opt1.setText(callCheck)
 
 	#set bet/raise for player 1 and 2
-	def setP1Opt2(self,Mainwindow,betRaise) :
+	def setP1Opt2(self,app,betRaise) :
 		player1Opt2.setText(betRaise)
 		player1Opt2Ok.setText(betRaise)
 
-	def setP2Opt2(self,Mainwindow,betRaise) :
+	def setP2Opt2(self,app,betRaise) :
 		player2Opt2.setText(betRaise)
 		player1Opt2Ok.setText(betRaise)
 
 
 	#functions to update money left with each player
-	def p1Money(self,Mainwindow,money):
+	def p1Money(self,app,money):
 		self.player1Money.setText("$" + money)
 
-	def p2Money(self,Mainwindow,money):
+	def p2Money(self,app,money):
 		self.player2Money.setText("$" + money)
 
-	def BotMoney(self,Mainwindow,money):
+	def BotMoney(self,app,money):
 		self.botMoney.setText("$" + money)
 
 	#function to update pot money
-	def PotMoney(self,Mainwindow,money) :
+	def PotMoney(self,app,money) :
 		self.potMoney.setText("$" + money)
 
 	#function to display pot's decision
-	def BotPlays(self,Mainwindow,decision) :
+	def BotPlays(self,app,decision) :
 		self.botPlays.setText("Poker bot" + decision)
 
 	#function to get the raise/bet money from players
-	def p1GetRaise(self,MainWindow) :
+	def p1GetRaise(self,app) :
 		value = self.player1bet.text()
 		print value
 
-	def p2GetRaise(self,MainWindow) :
+	def p2GetRaise(self,app) :
 		value = self.player2bet.text()
 		print value
 
 	#functions to handle what happens when call/check button is pressed for each player
-	def p1CallCheck(self,Mainwindow) :
+	def p1CallCheck(self,app) :
 		pass
 
-	def p2CallCheck(self,Mainwindow) :
+	def p2CallCheck(self,app) :
 		pass
 
 	#function to handle what happens when fold button is pressed for each player
-	def p1Fold(self,Mainwindow) :
+	def p1Fold(self,app) :
 		pass
 
-	def p2Fold(self,Mainwindow) :
+	def p2Fold(self,app) :
 		pass
-
 
 
 
 
 	#initialise the UI --- constant UI components
+<<<<<<< HEAD
 	def __init__(self, MainWindow):
 
 
@@ -176,14 +255,24 @@ class Ui_MainWindow(object):
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
 		MainWindow.resize(930, 722)
 
+=======
+	def __init__(self, app):    
+
+		QtGui.QMainWindow.__init__(self)
+
+		#Mainwindow
+		self.setObjectName(_fromUtf8("MainWindow"))
+		self.resize(930, 722)
+		
+>>>>>>> 274e621bfd10ef768bcd30b79a56484e47eed11f
 
 		#central widget
-		self.centralWidget = QtGui.QWidget(MainWindow)
+		self.centralWidget = QtGui.QWidget(self)
 		self.centralWidget.setObjectName(_fromUtf8("centralWidget"))
 
-		MainWindow.setWindowTitle("Texas Hold'em Poker")
-		MainWindow.setWindowIcon(QtGui.QIcon("Images/logo.jpg"))
-		MainWindow.setCentralWidget(self.centralWidget)
+		self.setWindowTitle("Texas Hold'em Poker")
+		self.setWindowIcon(QtGui.QIcon("Images/logo.jpg"))
+		self.setCentralWidget(self.centralWidget)
 
 		#community cards name
 		self.CommunityCards = QtGui.QLabel(self.centralWidget)
@@ -282,9 +371,10 @@ class Ui_MainWindow(object):
 
 
 
+		QtCore.QMetaObject.connectSlotsByName(self)
 
 	#initialise the non-constant UI components
-	def setupUi(self,Mainwindow) :
+	def setupUi(self,app) :
 
 		#name of current round
 		self.nameOfRound = QtGui.QLabel(self.centralWidget)
@@ -475,7 +565,6 @@ class Ui_MainWindow(object):
 
 
 
-
 		#player 2 option 1 -> call or check
 		self.player2Opt1 = QtGui.QPushButton(self.centralWidget)
 		self.player2Opt1.setGeometry(QtCore.QRect(350, 580, 75, 23))
@@ -602,4 +691,51 @@ class Ui_MainWindow(object):
 		""))
 		self.potMoney.setObjectName(_fromUtf8("potMoney"))
 
+<<<<<<< HEAD
 		# QtCore.QMetaObject.connectSlotsByName(MainWindow)       ----- wtf is this.??
+=======
+
+
+
+image_dir = "Images/"
+png = ".png"
+game = 0
+round = ["Preflop","Flop","Turn","River"]
+buy_in = 50
+blind = 5
+pot = 0
+p1_money = p2_money = bot_money = buy_in
+
+#setup UI
+app = QtGui.QApplication(sys.argv)
+# MainWindow = QtGui.QMainWindow()
+ui = Ui_MainWindow(app)
+ui.setupUi(app)
+
+
+ui.cc1(app,image_dir+"facedown"+png)
+ui.cc2(app,image_dir+"facedown"+png)
+ui.cc3(app,image_dir+"facedown"+png)
+ui.cc4(app,image_dir+"facedown"+png)
+ui.cc5(app,image_dir+"facedown"+png)
+ui.p1c1(app,image_dir+"facedown"+png)
+ui.p1c2(app,image_dir+"facedown"+png)
+ui.p2c1(app,image_dir+"facedown"+png)
+ui.p2c2(app,image_dir+"facedown"+png)
+ui.bc1(app,image_dir+"facedown"+png)
+ui.bc2(app,image_dir+"facedown"+png)
+
+ui.p1OptionsHideShow(app,True);
+ui.p2OptionsHideShow(app,False);
+
+ui.p1Money(app,str(buy_in))
+ui.p2Money(app,str(buy_in))
+ui.BotMoney(app,str(buy_in))
+
+ui.PotMoney(app,str(pot))
+
+ui.show()
+
+# sys.exit(app.exec_())
+
+>>>>>>> 274e621bfd10ef768bcd30b79a56484e47eed11f
