@@ -8,6 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import QThread
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -25,10 +26,25 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 
+class MyThread(QThread):
+
+    def __init__(self):
+        QThread.__init__(self)
+
+    def __delay__(self):
+        self.wait()
+
+    def run(self):
+        i = 0
+        while(1):
+            i = i+1
+            print "i = " + str(i)
+
 class Ui_MainWindow(object):
 
 	#function to stop game
 	def StopGame(self,Mainwindow):
+        print "**"
 		return 2
 
 	#function to change the name of round
@@ -155,6 +171,7 @@ class Ui_MainWindow(object):
 	#initialise the UI --- constant UI components
 	def __init__(self, MainWindow):
 
+
 		#Mainwindow
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
 		MainWindow.resize(930, 722)
@@ -259,6 +276,10 @@ class Ui_MainWindow(object):
 		self.stopGame.setObjectName(_fromUtf8("stopGame"))
 		self.stopGame.setText("STOP GAME")
 		self.stopGame.clicked.connect(self.StopGame)
+
+        thread = MyThread()
+        thread.start()
+
 
 
 
