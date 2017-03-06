@@ -1,0 +1,16 @@
+================================================
+File contains a brief description about all the papers/books or any other links referred by the collaborators
+whilst developing the bot
+================================================
+
+1. NS_thesis - Is a book type material contains every single step to follow along with necessary equations and information
+               required for developing the bot
+               Contains info about RL, MDP to make decisions and also info about the Naiva Bayes approach
+
+2. POKI - Is the full fledged documentation of the first poker bot ever made named "POKI"
+          # Also contains a diagramatic description about the poker bot architecture
+
+3. Creating-NL-TexasHold'em Poker - Is a stanford paper on creating a poker bot by
+                                    # They used a data set of hands thereby performing a supervised learning for the bot.
+                                    # manipulating the NB model
+                                    # using MDP and SVM's for decision process
