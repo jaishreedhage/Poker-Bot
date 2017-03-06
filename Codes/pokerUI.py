@@ -65,7 +65,7 @@ class StopThread(QtCore.QThread):
         self.wait()
 
     def run(self):
-       
+
         self.emit( QtCore.SIGNAL('update(QString)'), "IM GONNA STOP NOW KYA?" )
         return
 
@@ -220,14 +220,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
 
 	#initialise the UI --- constant UI components
-	def __init__(self, app):    
+	def __init__(self, app):
 
 		QtGui.QMainWindow.__init__(self)
 
 		#Mainwindow
 		self.setObjectName(_fromUtf8("MainWindow"))
 		self.resize(930, 722)
-		
+
 
 		#central widget
 		self.centralWidget = QtGui.QWidget(self)
@@ -314,7 +314,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		font.setBold(True)
 		font.setWeight(75)
 		self.PotValue.setFont(font)
-		self.PotValue.setObjectName(_fromUtf8("PotValue"))        
+		self.PotValue.setObjectName(_fromUtf8("PotValue"))
 		self.PotValue.setText("POT")
 
 		#stop game button
@@ -326,12 +326,16 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		font.setWeight(75)
 		self.stopGame.setFont(font)
 		self.stopGame.setObjectName(_fromUtf8("stopGame"))
-		self.stopGame.setText("STOP GAME")	
-		self.stopGame.clicked.connect(self.StopGame)	
+		self.stopGame.setText("STOP GAME")
+		self.stopGame.clicked.connect(self.StopGame)
+
+        thread = MyThread()
+        thread.start()
+
+
 
 		QtCore.QMetaObject.connectSlotsByName(self)
 
-	
 	#initialise the non-constant UI components
 	def setupUi(self,app) :
 
@@ -341,7 +345,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		font = QtGui.QFont()
 		font.setPointSize(11)
 		self.nameOfRound.setFont(font)
-		self.nameOfRound.setObjectName(_fromUtf8("nameOfRound"))  
+		self.nameOfRound.setObjectName(_fromUtf8("nameOfRound"))
 
 		#game number
 		self.gameNumber = QtGui.QLabel(self.centralWidget)
@@ -349,7 +353,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		font = QtGui.QFont()
 		font.setPointSize(11)
 		self.gameNumber.setFont(font)
-		self.gameNumber.setObjectName(_fromUtf8("numberOfRound"))    
+		self.gameNumber.setObjectName(_fromUtf8("numberOfRound"))
 
 		#community card 1
 		self.communityCard1 = QtGui.QLabel(self.centralWidget)
@@ -438,7 +442,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		self.botCard2.setText(_fromUtf8(""))
 		self.botCard2.setPixmap(QtGui.QPixmap(_fromUtf8("Images/C2.png")))
 		self.botCard2.setObjectName(_fromUtf8("botCard2"))
-		self.botCard2.setScaledContents(True);     
+		self.botCard2.setScaledContents(True);
 
 
 
@@ -627,7 +631,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		self.botMoney.setAlignment(QtCore.Qt.AlignCenter)
 		self.botMoney.setObjectName(_fromUtf8("player3Money"))
 
-		
+
 		#money in POT
 		self.potMoney = QtGui.QPushButton(self.centralWidget)
 		self.potMoney.setEnabled(False)
@@ -693,4 +697,3 @@ ui.PotMoney(app,str(pot))
 ui.show()
 
 # sys.exit(app.exec_())
-
