@@ -8,12 +8,8 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-<<<<<<< HEAD
-from PyQt4.QtCore import QThread
-=======
 import sys
 import time
->>>>>>> 274e621bfd10ef768bcd30b79a56484e47eed11f
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -31,28 +27,6 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 
-<<<<<<< HEAD
-class MyThread(QThread):
-
-    def __init__(self):
-        QThread.__init__(self)
-
-    def __delay__(self):
-        self.wait()
-
-    def run(self):
-        i = 0
-        while(1):
-            i = i+1
-            print "i = " + str(i)
-
-class Ui_MainWindow(object):
-
-	#function to stop game
-	def StopGame(self,Mainwindow):
-        print "**"
-		return 2
-=======
 #some important variables
 STOP = 0
 GAMENUMBER = ''
@@ -91,7 +65,7 @@ class StopThread(QtCore.QThread):
         self.wait()
 
     def run(self):
-       
+
         self.emit( QtCore.SIGNAL('update(QString)'), "IM GONNA STOP NOW KYA?" )
         return
 
@@ -118,7 +92,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		self.workThread.connect( self.workThread, QtCore.SIGNAL("update(QString)"),self.start)
 		self.workThread.start()
 		###################################################################
->>>>>>> 274e621bfd10ef768bcd30b79a56484e47eed11f
 
 	#function to change the name of round
 	def NameOfRound(self,app,round):
@@ -247,24 +220,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
 
 	#initialise the UI --- constant UI components
-<<<<<<< HEAD
-	def __init__(self, MainWindow):
-
-
-		#Mainwindow
-		MainWindow.setObjectName(_fromUtf8("MainWindow"))
-		MainWindow.resize(930, 722)
-
-=======
-	def __init__(self, app):    
+	def __init__(self, app):
 
 		QtGui.QMainWindow.__init__(self)
 
 		#Mainwindow
 		self.setObjectName(_fromUtf8("MainWindow"))
 		self.resize(930, 722)
-		
->>>>>>> 274e621bfd10ef768bcd30b79a56484e47eed11f
+
 
 		#central widget
 		self.centralWidget = QtGui.QWidget(self)
@@ -691,9 +654,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		""))
 		self.potMoney.setObjectName(_fromUtf8("potMoney"))
 
-<<<<<<< HEAD
-		# QtCore.QMetaObject.connectSlotsByName(MainWindow)       ----- wtf is this.??
-=======
 
 
 
@@ -737,5 +697,3 @@ ui.PotMoney(app,str(pot))
 ui.show()
 
 # sys.exit(app.exec_())
-
->>>>>>> 274e621bfd10ef768bcd30b79a56484e47eed11f
