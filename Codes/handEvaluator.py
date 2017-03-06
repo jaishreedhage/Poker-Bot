@@ -130,11 +130,12 @@ def twoPair (hand) :
 		elif (count==2 and pairs >= 2) :
 			cardValue = hand[i][1:]
 			if (not cardValue in cardPair) :
-				minCard = 0
+				minCard = -1
 				for k in range (0,len(cardPair)) :
-					if (cardRank[hand[i][1:]] < cardRank[cardPair[minCard]] ) :
+					if (cardRank[hand[i][1:]] > cardRank[cardPair[k]] ) :
 						minCard = k
-				cardPair[k] = hand[i][1:]
+				if (minCard >= 0) : 
+					cardPair[minCard] = hand[i][1:]
 
 	return cardPair
 
@@ -275,7 +276,7 @@ def fullHouse(hand):
 #hand = ['D1','H2','S5','C4','H3','S6','D7']
 #hand = ['DJ','SA','H10','H7','CK','D4','SQ']
 #hand = ['D10','SA','H5','H7','C6','DJ']
-hand = ['D10','HQ','H10','S10','CQ','HJ','C9']
+hand = ['D10','HQ','H10','SJ','CQ','HJ','C9']
 
-#print threeOfAKind(hand)
+print twoPair(hand)
 # print fullHouse(hand)

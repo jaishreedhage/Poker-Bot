@@ -1,58 +1,53 @@
 from HandEvaluator import *
 from pokerUI import *
+
 import random
 import sys
+import time
 
 
 
 #global variables
-image_dir = "Images/"
-png = ".png"
-game = 1
-round = ["Preflop","Flop","Turn","River"]
-buy_in = 200
-pot = 0
-
-
-
-#setup UI
-app = QtGui.QApplication(sys.argv)
-MainWindow = QtGui.QMainWindow()
-ui = Ui_MainWindow(MainWindow)
-ui.setupUi(MainWindow)
-
-ui.NameOfRound(MainWindow,round[0])
-ui.GameNumber(MainWindow,str(game))
-
-ui.cc1(MainWindow,image_dir+"facedown"+png)
-ui.cc2(MainWindow,image_dir+"facedown"+png)
-ui.cc3(MainWindow,image_dir+"facedown"+png)
-ui.cc4(MainWindow,image_dir+"facedown"+png)
-ui.cc5(MainWindow,image_dir+"facedown"+png)
-ui.p1c1(MainWindow,image_dir+"facedown"+png)
-ui.p1c2(MainWindow,image_dir+"facedown"+png)
-ui.p2c1(MainWindow,image_dir+"facedown"+png)
-ui.p2c2(MainWindow,image_dir+"facedown"+png)
-ui.bc1(MainWindow,image_dir+"facedown"+png)
-ui.bc2(MainWindow,image_dir+"facedown"+png)
-
-ui.p1OptionsHideShow(MainWindow,True);
-ui.p2OptionsHideShow(MainWindow,False);
-
-ui.p1Money(MainWindow,str(buy_in))
-ui.p2Money(MainWindow,str(buy_in))
-ui.BotMoney(MainWindow,str(buy_in))
-
-ui.PotMoney(MainWindow,str(pot))
-
-MainWindow.show()
-sys.exit(app.exec_())
-
-
 
 deck = cards
+game = 0
 
 #shuffle cards
 def shuffle () :
 	random.shuffle(deck)
+
+
+print STOP,"***"
+
+while (STOP is 0) :
+
+	shuffle()
+	popped_cards = []
+	print "In while loop :) ", game
+	
+	ui.GameNumber(app,str(game))
+	app.processEvents()
+	pop = deck.pop()
+	popped_cards.append(pop)
+	game = game+1
+	# ui.p1c1(MainWindow,image_dir+pop+png)
+	# pop = deck.pop()
+	# popped_cards.append(pop)
+	# ui.p1c2(MainWindow,image_dir+pop+png)
+	# pop = deck.pop()
+	# popped_cards.append(pop)
+	# ui.p2c1(MainWindow,image_dir+pop+png)
+	# pop = deck.pop()
+	# popped_cards.append(pop)
+	# ui.p2c2(MainWindow,image_dir+pop+png)
+	# pop = deck.pop()
+	# popped_cards.append(pop)
+	# ui.bc1(MainWindow,image_dir+pop+png)
+	# pop = deck.pop()
+	# popped_cards.append(pop)
+	# ui.bc2(MainWindow,image_dir+pop+png)
+
+	time.sleep(2)
+	# print "Hello", STOP
+	# app.processEvents()
 
