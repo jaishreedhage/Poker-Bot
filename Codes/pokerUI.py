@@ -329,7 +329,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		self.stopGame.setText("STOP GAME")
 		self.stopGame.clicked.connect(self.StopGame)
 
-        QtCore.QMetaObject.connectSlotsByName(self)
+        	QtCore.QMetaObject.connectSlotsByName(self)
 
 	#initialise the non-constant UI components
 	def setupUi(self,app) :
