@@ -6,28 +6,36 @@ UI funcs used are
 1. StopGame() --- what should this function return and how should it be connected to the app?
 2. NameOfRound()  --- changes the name of the round on UI
 3. GameNumber()   --- changes the game number on UI
-4-14. cc1() .... cc5() , p1c1() .... bc2  ---- change cards 
+4-14. cc1() .... cc5() , p1c1() .... bc2  ---- change cards
 15-16. p1OptionsHideShow() ... p2OptionsHideShow()    --- show or hide player1 options
-17-18. setP1Opt1() ... setP2Opt2()     --- set call/check for P1 and P2
-19-20. setP1Opt2() ... setP2Opt2()     --- set bet/raise for P1 and P2
+17-18. setP1Opt() ... setP2Opt()     --- set call/check and bet/raise for P1 and P2    ------>>>> EDITED
+19-20. setP1Opt2() ... setP2Opt2()     --- set bet/raise for P1 and P2   ---->>>> removed
 21-23. p1Money() ... botMoney()    ---update money of all players
 24. PotMoney()  --- update money in Pot
 25. BotPlays()  --- shows what move bot took
 
-26. p1GetRaise() ... p2GetRaise()   --- get bet/raise money enetered in the box on clicking
+26. p1GetRaise() ... p2GetRaise()   --- set bet/raise flag on clicking
 27. p1CallCheck()  ... p2CallCheck()   --- yet to be implemented
 28. p1Fold()  ... p2Fold()   --- yet to be implemented
 
+
+------------------------------------------------------------------------------------------------------------------------------------------
+HANDEVALUATOR DOUBTS AND TODOS
 --------------------------------------------------------------------------------------------------------------------------------------------
-TO DO 
+TO DO
 
-1. implement function numbers (1),(26),(27),(28)
+1. implement function numbers (1),(26),(27),(28)  ---DONE---
 
+2. how to quit from the loop (preflop and etc) i.e to check that the money put in is equal by all
+3. when someone raises then the next person must call the "difference" of the money
+4. shouldn't it be  value + flop[i]    , where 'i' refers to the player .... coz say in the first round i put in 6$, next time in the same while loop i call.......ok sounds weird....think about it later
+5. update pot money properly
+6. STOP GAME should work even when in middle of some round that is in middle of preflop,flop etc.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ASSUMPTIONS
 
-1. Assuming buy-in is $200. Coz it'll be easier if we start with less money.
+1. Assuming buy-in is $50. Coz it'll be easier if we start with less money.
 
 
 
@@ -52,10 +60,10 @@ FUTURE IMPLEMENTATIONS
 # 	def __init__ ( self) :
 
 # 		super (gameWindow, self). __init__()
-		
+
 # 		#setting position of the window
 # 		self.setGeometry(50,50,500,500)
-		
+
 # 		#title of the window and icon
 # 		self.setWindowTitle("Texas Hold'em Poker")
 # 		self.setWindowIcon(QtGui.QIcon('logo.jpg'))
@@ -65,7 +73,7 @@ FUTURE IMPLEMENTATIONS
 # 		#use full ABSOLUTE path to the image, not relative
 # 		pic.setPixmap(QtGui.QPixmap("Images/HJ.png"))
 
-# 		self.show()		
+# 		self.show()
 
 # #create an application object
 # app = QtGui.QApplication(sys.argv)

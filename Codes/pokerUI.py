@@ -75,24 +75,9 @@ class StopThread(QtCore.QThread):
 
 class Ui_MainWindow(QtGui.QMainWindow):
 
-	def start1(self,text):
-		print "Add: " + text
-		print GAMENUMBER
-		self.gameNumber.setText(str(text))
-
-	def start(self,text):
-		print text
-
 	#function to stop game
 	def StopGame(self):
 		variables.STOP = 1
-		pass
-		##############################################################
-		print "YO YO"
-		self.workThread = StopThread()
-		self.workThread.connect( self.workThread, QtCore.SIGNAL("update(QString)"),self.start)
-		self.workThread.start()
-		###################################################################
 
 	#function to change the name of round
 	def NameOfRound(self,app,round):
@@ -101,12 +86,6 @@ class Ui_MainWindow(QtGui.QMainWindow):
 	#function to change game number
 	def GameNumber(self,app,number) :
 		self.gameNumber.setText(number)
-		##############################################################
-		# GAMENUMBER = number
-		# self.workThread = GameThread()
-		# self.workThread.connect( self.workThread, QtCore.SIGNAL("update(QString)"),self.start1)
-		# self.workThread.start()
-		##############################################################
 
 	#function to change cards
 	def cc1(self,app,value) :
@@ -159,21 +138,26 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		self.dollar2.setVisible(toggle)
 		self.player2bet.setVisible(toggle)
 
-	#set call/check for player 1 and 2
-	def setP1Opt1(self,app,callCheck) :
-		player1Opt1.setText(callCheck)
+    #set label/buttons texts
+	def setP1Opt(self,app,callBet) :
+		callCheck = "Call"
+		betRaise = "Bet"
+		if callBet is 1 :
+			callCheck = "Check"
+			betRaise = "Raise"
+		self.player1Opt1.setText(callCheck)
+		self.player1Opt2.setText(betRaise)
+		self.player1Opt2Ok.setText(betRaise)
 
-	def setP2Opt1(self,app,callCheck) :
-		player2Opt1.setText(callCheck)
-
-	#set bet/raise for player 1 and 2
-	def setP1Opt2(self,app,betRaise) :
-		player1Opt2.setText(betRaise)
-		player1Opt2Ok.setText(betRaise)
-
-	def setP2Opt2(self,app,betRaise) :
-		player2Opt2.setText(betRaise)
-		player1Opt2Ok.setText(betRaise)
+	def setP2Opt(self,app,callBet) :
+		callCheck = "Call"
+		betRaise = "Bet"
+		if callBet is 1 :
+			callCheck = "Check"
+			betRaise = "Raise"
+		self.player2Opt1.setText(callCheck)
+		self.player2Opt2.setText(betRaise)
+		self.player2Opt2Ok.setText(betRaise)
 
 
 	#functions to update money left with each player
@@ -196,27 +180,36 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
 	#function to get the raise/bet money from players
 	def p1GetRaise(self,app) :
+		print "P1 GET RAISE"
+		variables.P1BETRAISE = 1
 		value = self.player1bet.text()
 		print value
 
 	def p2GetRaise(self,app) :
-		value = self.player2bet.text()
-		print value
+		print "P2 GET RAISE"
+		variables.P2BETRAISE = 1
 
 	#functions to handle what happens when call/check button is pressed for each player
 	def p1CallCheck(self,app) :
+		print "P1 CALL"
+		variables.P1CALLCHECK = 1
 		pass
 
 	def p2CallCheck(self,app) :
+		print "P2 CALL"
+		variables.P2CALLCHECK = 1
 		pass
 
 	#function to handle what happens when fold button is pressed for each player
 	def p1Fold(self,app) :
+		print "P1 FOLD"
+		variables.P1FOLD = 1
 		pass
 
 	def p2Fold(self,app) :
+		print "P2 FOLD"
+		variables.P2FOLD = 1
 		pass
-
 
 
 
@@ -330,12 +323,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		self.stopGame.setText("STOP GAME")
 		self.stopGame.clicked.connect(self.StopGame)
 
-        thread = MyThread()
-        thread.start()
-
-
-
-		QtCore.QMetaObject.connectSlotsByName(self)
+		# QtCore.QMetaObject.connectSlotsByName(self)
 
 	#initialise the non-constant UI components
 	def setupUi(self,app) :
@@ -654,47 +642,3 @@ class Ui_MainWindow(QtGui.QMainWindow):
 		"color : rgb(170, 0, 0)\n"
 		""))
 		self.potMoney.setObjectName(_fromUtf8("potMoney"))
-
-
-
-
-image_dir = "Images/"
-png = ".png"
-game = 0
-round = ["Preflop","Flop","Turn","River"]
-buy_in = 50
-blind = 5
-pot = 0
-p1_money = p2_money = bot_money = buy_in
-
-#setup UI
-app = QtGui.QApplication(sys.argv)
-# MainWindow = QtGui.QMainWindow()
-ui = Ui_MainWindow(app)
-ui.setupUi(app)
-
-
-ui.cc1(app,image_dir+"facedown"+png)
-ui.cc2(app,image_dir+"facedown"+png)
-ui.cc3(app,image_dir+"facedown"+png)
-ui.cc4(app,image_dir+"facedown"+png)
-ui.cc5(app,image_dir+"facedown"+png)
-ui.p1c1(app,image_dir+"facedown"+png)
-ui.p1c2(app,image_dir+"facedown"+png)
-ui.p2c1(app,image_dir+"facedown"+png)
-ui.p2c2(app,image_dir+"facedown"+png)
-ui.bc1(app,image_dir+"facedown"+png)
-ui.bc2(app,image_dir+"facedown"+png)
-
-ui.p1OptionsHideShow(app,False);
-ui.p2OptionsHideShow(app,True);
-
-ui.p1Money(app,str(buy_in))
-ui.p2Money(app,str(buy_in))
-ui.BotMoney(app,str(buy_in))
-
-ui.PotMoney(app,str(pot))
-
-ui.show()
-
-# sys.exit(app.exec_())
