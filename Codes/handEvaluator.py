@@ -256,9 +256,6 @@ def straightFlush(hand):
 	return straight_flush
 
 
-
-
-
 #function to check whether there is a full house in a given hand of cards returns empty or the full house sequence
 def fullHouse(hand):
 	temp = hand
@@ -293,10 +290,10 @@ def fullHouse(hand):
 # print fullHouse(hand)
 # hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
 #hand  = ['DA','D7','H6','S8','S9','C10']
-hand = ['CA', 'HA', 'CK', 'C10', 'SK', 'CJ', 'H10']
+# hand = ['CA', 'HA', 'CK', 'C10', 'SK', 'CJ', 'H10']
 # print straightFlush(hand)
 # print straight(hand)
-print twoPair(hand)
+# print twoPair(hand)
 # print straightFlush(hand)
 # print threeOfAKind(hand)
 #print fullHouse(hand)
