@@ -78,18 +78,18 @@ def threeOfAKind (hand) :
 def fourOfAKind (hand) :
 	no_of_cards = len(hand)
 	four_of_kind = []
-
-	count = 1
-	flag=0
-	for j in range (0,no_of_cards) :
-		if (i!=j and hand[i][1:] == hand[j][1:]) :
-			count = count+1
-			if (count==4) :
-				four_of_kind.append(hand[i][1:])
-				flag = 1;
-				break
-			if (flag==1) :
-				break
+	for i in range (0,no_of_cards) :
+		count = 1
+		flag=0
+		for j in range (0,no_of_cards) :
+			if (i!=j and hand[i][1:] == hand[j][1:]) :
+				count = count+1
+				if (count==4) :
+					four_of_kind.append(hand[i][1:])
+					flag = 1;
+					break
+				if (flag==1) :
+					break
 
 	return four_of_kind
 
@@ -118,7 +118,7 @@ def onePair (hand) :
 	return card_pair
 
 #checking for twp pair in hand(and amongst the 7 cards)
-#NOTE :- check the old twoPair for the test case hand = ['CA', 'HA', 'CK', 'C10', 'SK', 'CJ', 'H10'] that its wron
+#NOTE :- check the old twoPair for the test case hand = ['CA', 'HA', 'CK', 'C10', 'SK', 'CJ', 'H10'] that its wrong
 def twoPair (hand) :
 	no_of_cards = len(hand)
 	card_pair = []
@@ -144,6 +144,9 @@ def twoPair (hand) :
 				if card_rank[value] < min_card_value:
 					min_card_value = value
 			card_pair.remove(min_card_value)
+
+	if (len(card_pair) < 2) :
+		card_pair = []
 
 	return card_pair
 
@@ -283,7 +286,7 @@ def fullHouse(hand):
 #hand = ['D4','SA','DA','H4','C4','DA']
 #hand = ['D1','H2','S5','C4','H3','S6','D7']
 #hand = ['DJ','SA','H10','H7','CK','D4','SQ']
-#hand = ['D10','SA','H5','H7','C6','DJ']
+# hand = ['DJ', 'H7', 'S2', 'SJ', 'S2', 'C7']
 # hand = ['D10','HQ','H10','SJ','CQ','HJ','C9']
 
 # print twoPair(hand)

@@ -36,6 +36,32 @@ def shuffle () :
 	random.shuffle(deck)
 
 
+#checking what card bot has
+def bot(bot_cards) :
+	print "CHECKING IF BOT HAS SOMETHING"
+	print bot_cards
+	if royalFlush(bot_cards) is "yes" :
+		print "royalFlush"
+	elif len(straightFlush(bot_cards)) is not 0 :
+		print "straightFlush", straightFlush(bot_cards)
+	elif len(fourOfAKind(bot_cards)) is not 0 :
+		print "Four of a kind" , fourOfAKind(bot_cards)
+	elif len(fullHouse(bot_cards)) is not 0:
+		print "Full house" , fullHouse(bot_cards)
+	elif len(flush(bot_cards)) is not 0 :
+		print "Flush" , flush(bot_cards)
+	elif len(straight(bot_cards)) is not 0 :
+		print "Straight" , straight(bot_cards)
+	elif len(threeOfAKind(bot_cards)) is not 0 :
+		print "three of a kind" , threeOfAKind(bot_cards)
+	elif len(twoPair(bot_cards)) is not 0 :
+		print "two Pair" , twoPair(bot_cards)
+	elif len(onePair(bot_cards)) is not 0 :
+		print "one Pair" , onePair(bot_cards)
+
+	print "HIGH CARD: ",highCard(bot_cards)
+
+
 #player1 decisions
 def player1(round,PLAYER1) :
 	value = 0
@@ -49,11 +75,11 @@ def player1(round,PLAYER1) :
 		pass
 	elif round is not "Preflop" and PLAYER1 is not 2 :
 		#stuff need to be done here
-		time.sleep(1)
+		time.sleep(0.5)
 		app.processEvents()
 		while(variables.P1CALLCHECK is 0 and variables.P1BETRAISE is 0 and variables.P1FOLD is 0) :
 			print "P1 WAITING"
-			time.sleep(0.5)
+			time.sleep(0.3)
 			app.processEvents()
 		if(variables.P1FOLD is 1) :
 			PLAYER1 = 2
@@ -87,11 +113,11 @@ def player2(round,PLAYER2) :
 		pass
 	else :
 		# app.processEvents()';'
-		time.sleep(1)
+		time.sleep(0.5)
 		app.processEvents()
 		while(variables.P2CALLCHECK is 0 and variables.P2BETRAISE is 0 and variables.P2FOLD is 0) :
 			print "WAITING"
-			time.sleep(0.5)
+			time.sleep(0.3)
 			app.processEvents()
 		if(variables.P2FOLD is 1) :
 			PLAYER2 = 2
@@ -133,6 +159,8 @@ while (variables.STOP is 0) :
 	PLAYER2 = 0
 	BOT = 0
 
+	bot_cards = []
+
 	ui.cc1(app,image_dir+"facedown"+png)
 	ui.cc2(app,image_dir+"facedown"+png)
 	ui.cc3(app,image_dir+"facedown"+png)
@@ -148,9 +176,9 @@ while (variables.STOP is 0) :
 	ui.p1OptionsHideShow(app,True);
 	ui.p2OptionsHideShow(app,False);
 
-	ui.p1Money(app,str(buy_in))
-	ui.p2Money(app,str(buy_in))
-	ui.BotMoney(app,str(buy_in))
+	ui.p1Money(app,str(p1_money))
+	ui.p2Money(app,str(p2_money))
+	ui.BotMoney(app,str(bot_money))
 
 	ui.PotMoney(app,str(pot))
 
@@ -178,10 +206,12 @@ while (variables.STOP is 0) :
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	bot_cards.append(pop)
 	ui.bc1(app,image_dir+pop+png)
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	bot_cards.append(pop)
 	ui.bc2(app,image_dir+pop+png)
 
 	app.processEvents()
@@ -206,6 +236,7 @@ while (variables.STOP is 0) :
 		val,PLAYER1 = player1(round[round_name],PLAYER1)
 
 		ui.p1Money(app,str(p1_money))
+		ui.player1bet.setText("")
 
 		pot += val
 		ui.PotMoney(app,str(pot))
@@ -231,6 +262,7 @@ while (variables.STOP is 0) :
 		ui.PotMoney(app,str(pot))
 
 		ui.p2Money(app,str(p2_money))
+		ui.player2bet.setText("")
 		print preflop
 
 		ui.p1OptionsHideShow(app,False);
@@ -242,6 +274,7 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
+		ui.BotPlays(app,"")
 		break
 
 		# bot()
@@ -252,14 +285,17 @@ while (variables.STOP is 0) :
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	bot_cards.append(pop)
 	ui.cc1(app,image_dir+pop+png)
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	bot_cards.append(pop)
 	ui.cc2(app,image_dir+pop+png)
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	bot_cards.append(pop)
 	ui.cc3(app,image_dir+pop+png)
 
 	app.processEvents()
@@ -285,6 +321,7 @@ while (variables.STOP is 0) :
 		flop[0] = val
 
 		ui.p1Money(app,str(p1_money))
+		ui.player1bet.setText("")
 
 		app.processEvents()
 
@@ -303,6 +340,7 @@ while (variables.STOP is 0) :
 		flop[1] = val
 
 		ui.p2Money(app,str(p2_money))
+		ui.player2bet.setText("")
 		print flop
 
 		ui.p1OptionsHideShow(app,False);
@@ -314,9 +352,12 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
+		bot(bot_cards)
+
+		ui.BotPlays(app,"")
 		break
 
-		# bot()
+
 	#
 	#
 	round_name = round_name + 1
@@ -324,6 +365,7 @@ while (variables.STOP is 0) :
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	bot_cards.append(pop)
 	ui.cc4(app,image_dir+pop+png)
 
 	app.processEvents()
@@ -346,6 +388,7 @@ while (variables.STOP is 0) :
 		turn[0] = val
 
 		ui.p1Money(app,str(p1_money))
+		ui.player1bet.setText("")
 
 		app.processEvents()
 
@@ -364,6 +407,7 @@ while (variables.STOP is 0) :
 		turn[1] = val
 
 		ui.p2Money(app,str(p2_money))
+		ui.player2bet.setText("")
 		print turn
 
 		ui.p1OptionsHideShow(app,False);
@@ -375,9 +419,13 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
+		bot(bot_cards)
+
+		ui.BotPlays(app,"")
 		break
 
-		# bot()()
+
+
 
 	print PLAYER1 , PLAYER2
 #
@@ -387,6 +435,7 @@ while (variables.STOP is 0) :
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	bot_cards.append(pop)
 	ui.cc5(app,image_dir+pop+png)
 
 	app.processEvents()
@@ -407,6 +456,7 @@ while (variables.STOP is 0) :
 		river[0] = val
 
 		ui.p1Money(app,str(p1_money))
+		ui.player1bet.setText("")
 
 		app.processEvents()
 
@@ -425,6 +475,7 @@ while (variables.STOP is 0) :
 		river[1] = val
 
 		ui.p2Money(app,str(p2_money))
+		ui.player2bet.setText("")
 		print river
 
 		ui.p1OptionsHideShow(app,False);
@@ -436,9 +487,11 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
+		bot(bot_cards)
+
+		ui.BotPlays(app," ")
 		break
 
-		# bot()
 	#
 	# winner()
 
