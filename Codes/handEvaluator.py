@@ -78,7 +78,6 @@ def threeOfAKind (hand) :
 def fourOfAKind (hand) :
 	no_of_cards = len(hand)
 	four_of_kind = []
-
 	count = 1
 	flag=0
 	for j in range (0,no_of_cards) :
@@ -136,6 +135,7 @@ def twoPair (hand) :
 				card_pair.append(card_value)
 			count_pair = count_pair + 1
 
+
 		elif (count==2 and count_pair >= 2) :
 			card_value = hand[i][1:]
 		 	card_pair.append(card_value)				# CHANGED := made the two pair code more efficient as it wasnt working for a test case hand = ['CA', 'HA', 'CK', 'C10', 'SK', 'CJ', 'H10']
@@ -151,6 +151,7 @@ def twoPair (hand) :
 def flush (hand) :
 	no_of_cards = len(hand)
 	flush_suit = []
+
 	for i in range (0,len(suit)) :
 		count = 0
 		for j in range (0,no_of_cards) :
@@ -256,6 +257,9 @@ def straightFlush(hand):
 	return straight_flush
 
 
+
+
+
 #function to check whether there is a full house in a given hand of cards returns empty or the full house sequence
 def fullHouse(hand):
 	temp = hand
@@ -290,10 +294,12 @@ def fullHouse(hand):
 # print fullHouse(hand)
 # hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
 #hand  = ['DA','D7','H6','S8','S9','C10']
-# hand = ['CA', 'HA', 'CK', 'C10', 'SK', 'CJ', 'H10']
+# hand = ['CA', 'HA', 'CK', 'SK', 'CJ', 'HJ']
+hand  = ['DJ', 'H7', 'S2', 'SJ', 'S2', 'C7']
+# hand = ['DJ', 'H5', 'S2', 'SJ', 'S4', 'C7']
 # print straightFlush(hand)
 # print straight(hand)
-# print twoPair(hand)
+print twoPair(hand)
 # print straightFlush(hand)
 # print threeOfAKind(hand)
 #print fullHouse(hand)
