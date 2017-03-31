@@ -28,9 +28,6 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 
-#some important variables
-GAMENUMBER = ''
-
 ####################################################################################################################
 
 # class GameThread(QtCore.QThread):
@@ -45,29 +42,29 @@ GAMENUMBER = ''
 # 		return
 
 
-class GameThread(QtCore.QThread):
-    def __init__(self):
-        QtCore.QThread.__init__(self)
-
-    def __del__(self):
-        self.wait()
-
-    def run(self):
-		self.emit( QtCore.SIGNAL('update(QString)'), str(GAMENUMBER))
-		return
-
-
-class StopThread(QtCore.QThread):
-    def __init__(self):
-        QtCore.QThread.__init__(self)
-
-    def __del__(self):
-        self.wait()
-
-    def run(self):
-
-        self.emit( QtCore.SIGNAL('update(QString)'), "IM GONNA STOP NOW KYA?" )
-        return
+# class GameThread(QtCore.QThread):
+#     def __init__(self):
+#         QtCore.QThread.__init__(self)
+#
+#     def __del__(self):
+#         self.wait()
+#
+#     def run(self):
+# 		self.emit( QtCore.SIGNAL('update(QString)'), str(GAMENUMBER))
+# 		return
+#
+#
+# class StopThread(QtCore.QThread):
+#     def __init__(self):
+#         QtCore.QThread.__init__(self)
+#
+#     def __del__(self):
+#         self.wait()
+#
+#     def run(self):
+#
+#         self.emit( QtCore.SIGNAL('update(QString)'), "IM GONNA STOP NOW KYA?" )
+#         return
 
 ############################################################################################################################
 
@@ -176,7 +173,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
 	#function to display pot's decision
 	def BotPlays(self,app,decision) :
-		self.botPlays.setText("Poker bot" + decision)
+		self.botPlays.setText("" + decision)
 
 	#function to get the raise/bet money from players
 	def p1GetRaise(self,app) :

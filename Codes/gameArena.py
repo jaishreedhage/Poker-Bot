@@ -10,7 +10,7 @@ import time
 image_dir = "Images/"
 png = ".png"
 pot = 0
-game = 0
+game = 1
 round = ["Preflop","Flop","Turn","River"]
 buy_in = 50
 blind = 5
@@ -35,6 +35,67 @@ ui.show()
 def shuffle () :
 	random.shuffle(deck)
 
+def card_checker(player_cards,community_cards) :
+
+	high_card = highCard(player_cards)
+
+	if royalFlush(player_cards+community_cards) is "yes" :
+		return 1,royalFlush(player_cards+community_cards), high_card
+	elif len(straightFlush(player_cards+community_cards)) is not 0 :
+		print 2,straightFlush(player_cards+community_cards), high_card
+	elif len(fourOfAKind(player_cards+community_cards)) is not 0 :
+		return 3,fourOfAKind(player_cards+community_cards), high_card
+	elif len(fullHouse(player_cards+community_cards)) is not 0:
+		return 4,fullHouse(player_cards+community_cards), high_card
+	elif len(flush(player_cards+community_cards)) is not 0 :
+		return 5,flush(player_cards+community_cards), high_card
+	elif len(straight(player_cards+community_cards)) is not 0 :
+		return 6,straight(player_cards+community_cards), high_card
+	elif len(threeOfAKind(player_cards+community_cards)) is not 0 :
+		return 7,threeOfAKind(player_cards+community_cards), high_card
+	elif len(twoPair(player_cards+community_cards)) is not 0 :
+		return 8,twoPair(player_cards+community_cards), high_card
+	elif len(onePair(player_cards+community_cards)) is not 0 :
+		return 9,onePair(player_cards+community_cards), high_card
+	else :
+		return 0,[],high_card
+
+
+#GAME deciding who won
+def winner(player1_cards,player2_cards,bot_cards,community_cards) :
+	print "CHECKING WHO WON THE GAME ",game
+
+	#player 1
+	best_hand_1 = card_checker(player1_cards,community_cards)[0]
+	best_card_1 = card_checker(player1_cards,community_cards)[1]
+	high_card_1 = card_checker(player1_cards,community_cards)[2]
+
+	#player 2
+	best_hand_2 = card_checker(player2_cards,community_cards)[0]
+	best_card_2 = card_checker(player2_cards,community_cards)[1]
+	high_card_2 = card_checker(player2_cards,community_cards)[2]
+
+	#bot
+	best_hand_3 = card_checker(bot_cards,community_cards)[0]
+	best_card_3 = card_checker(bot_cards,community_cards)[1]
+	high_card_3 = card_checker(bot_cards,community_cards)[2]
+
+
+
+
+
+
+#checking what card bot has
+def bot(bot_cards,community_cards) :
+	print "CHECKING IF BOT HAS SOMETHING"
+
+	best_hand = card_checker(bot_cards,community_cards)[0]
+	best_card = card_checker(bot_cards,community_cards)[1]
+	high_card = card_checker(bot_cards,community_cards)[2]
+
+	print best_hand, best_card , high_card
+
+
 
 #player1 decisions
 def player1(round,PLAYER1) :
@@ -49,12 +110,13 @@ def player1(round,PLAYER1) :
 		pass
 	elif round is not "Preflop" and PLAYER1 is not 2 :
 		#stuff need to be done here
-		time.sleep(1)
+		time.sleep(0.1)
 		app.processEvents()
-		while(variables.P1CALLCHECK is 0 and variables.P1BETRAISE is 0 and variables.P1FOLD is 0) :
-			print "P1 WAITING"
-			time.sleep(0.5)
+		while(variables.P1CALLCHECK is 0 and variables.P1BETRAISE is 0 and variables.P1FOLD is 0 and variables.STOP is 0) :
+			time.sleep(0.1)
 			app.processEvents()
+		if(variables.STOP is 1) :
+			return value,PLAYER1
 		if(variables.P1FOLD is 1) :
 			PLAYER1 = 2
 			variables.P1FOLD = 0
@@ -87,12 +149,13 @@ def player2(round,PLAYER2) :
 		pass
 	else :
 		# app.processEvents()';'
-		time.sleep(1)
+		time.sleep(0.1)
 		app.processEvents()
-		while(variables.P2CALLCHECK is 0 and variables.P2BETRAISE is 0 and variables.P2FOLD is 0) :
-			print "WAITING"
-			time.sleep(0.5)
+		while(variables.P2CALLCHECK is 0 and variables.P2BETRAISE is 0 and variables.P2FOLD is 0 and variables.STOP is 0) :
+			time.sleep(0.1)
 			app.processEvents()
+		if(variables.STOP is 1) :
+			return value,PLAYER2
 		if(variables.P2FOLD is 1) :
 			PLAYER2 = 2
 			variables.P2FOLD = 0
@@ -133,6 +196,11 @@ while (variables.STOP is 0) :
 	PLAYER2 = 0
 	BOT = 0
 
+	bot_cards = []
+	player1_cards = []
+	player2_cards = []
+	community_cards = []
+
 	ui.cc1(app,image_dir+"facedown"+png)
 	ui.cc2(app,image_dir+"facedown"+png)
 	ui.cc3(app,image_dir+"facedown"+png)
@@ -148,9 +216,9 @@ while (variables.STOP is 0) :
 	ui.p1OptionsHideShow(app,True);
 	ui.p2OptionsHideShow(app,False);
 
-	ui.p1Money(app,str(buy_in))
-	ui.p2Money(app,str(buy_in))
-	ui.BotMoney(app,str(buy_in))
+	ui.p1Money(app,str(p1_money))
+	ui.p2Money(app,str(p2_money))
+	ui.BotMoney(app,str(bot_money))
 
 	ui.PotMoney(app,str(pot))
 
@@ -162,26 +230,32 @@ while (variables.STOP is 0) :
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	player1_cards.append(pop)
 	ui.p1c1(app,image_dir+pop+png)
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	player1_cards.append(pop)
 	ui.p1c2(app,image_dir+pop+png)
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	player2_cards.append(pop)
 	ui.p2c1(app,image_dir+pop+png)
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	player2_cards.append(pop)
 	ui.p2c2(app,image_dir+pop+png)
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	bot_cards.append(pop)
 	ui.bc1(app,image_dir+pop+png)
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	bot_cards.append(pop)
 	ui.bc2(app,image_dir+pop+png)
 
 	app.processEvents()
@@ -205,7 +279,11 @@ while (variables.STOP is 0) :
 
 		val,PLAYER1 = player1(round[round_name],PLAYER1)
 
+		if(variables.STOP is 1) :
+			break
+
 		ui.p1Money(app,str(p1_money))
+		ui.player1bet.setText("")
 
 		pot += val
 		ui.PotMoney(app,str(pot))
@@ -225,12 +303,16 @@ while (variables.STOP is 0) :
 
 		val,PLAYER2 = player2(round[round_name],PLAYER2)
 
+		if(variables.STOP is 1) :
+			break
+
 		preflop[1] = val
 
 		pot += val
 		ui.PotMoney(app,str(pot))
 
 		ui.p2Money(app,str(p2_money))
+		ui.player2bet.setText("")
 		print preflop
 
 		ui.p1OptionsHideShow(app,False);
@@ -242,9 +324,13 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
+		ui.BotPlays(app,"")
 		break
 
 		# bot()
+
+	if(variables.STOP is 1) :
+		break
 
 
 	round_name = round_name + 1
@@ -252,14 +338,17 @@ while (variables.STOP is 0) :
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	community_cards.append(pop)
 	ui.cc1(app,image_dir+pop+png)
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	community_cards.append(pop)
 	ui.cc2(app,image_dir+pop+png)
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	community_cards.append(pop)
 	ui.cc3(app,image_dir+pop+png)
 
 	app.processEvents()
@@ -279,12 +368,16 @@ while (variables.STOP is 0) :
 
 		val,PLAYER1 = player1(round[round_name],PLAYER1)
 
+		if(variables.STOP is 1) :
+			break
+
 		pot += val
 		ui.PotMoney(app,str(pot))
 
 		flop[0] = val
 
 		ui.p1Money(app,str(p1_money))
+		ui.player1bet.setText("")
 
 		app.processEvents()
 
@@ -297,12 +390,16 @@ while (variables.STOP is 0) :
 
 		val,PLAYER2 = player2(round[round_name],PLAYER2)
 
+		if(variables.STOP is 1) :
+			break
+
 		pot += val
 		ui.PotMoney(app,str(pot))
 
 		flop[1] = val
 
 		ui.p2Money(app,str(p2_money))
+		ui.player2bet.setText("")
 		print flop
 
 		ui.p1OptionsHideShow(app,False);
@@ -314,9 +411,16 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
+		bot(bot_cards,community_cards)
+
+		ui.BotPlays(app,"")
 		break
 
-		# bot()
+
+
+	if(variables.STOP is 1) :
+		break
+
 	#
 	#
 	round_name = round_name + 1
@@ -324,6 +428,7 @@ while (variables.STOP is 0) :
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	community_cards.append(pop)
 	ui.cc4(app,image_dir+pop+png)
 
 	app.processEvents()
@@ -340,12 +445,16 @@ while (variables.STOP is 0) :
 
 		val,PLAYER1 = player1(round[round_name],PLAYER1)
 
+		if(variables.STOP is 1) :
+			break
+
 		pot += val
 		ui.PotMoney(app,str(pot))
 
 		turn[0] = val
 
 		ui.p1Money(app,str(p1_money))
+		ui.player1bet.setText("")
 
 		app.processEvents()
 
@@ -358,12 +467,16 @@ while (variables.STOP is 0) :
 
 		val,PLAYER2 = player2(round[round_name],PLAYER2)
 
+		if(variables.STOP is 1) :
+			break
+
 		pot += val
 		ui.PotMoney(app,str(pot))
 
 		turn[1] = val
 
 		ui.p2Money(app,str(p2_money))
+		ui.player2bet.setText("")
 		print turn
 
 		ui.p1OptionsHideShow(app,False);
@@ -375,9 +488,17 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
+		bot(bot_cards,community_cards)
+
+		ui.BotPlays(app,"")
 		break
 
-		# bot()()
+
+
+	if(variables.STOP is 1) :
+		break
+
+
 
 	print PLAYER1 , PLAYER2
 #
@@ -387,6 +508,7 @@ while (variables.STOP is 0) :
 
 	pop = deck.pop()
 	popped_cards.append(pop)
+	community_cards.append(pop)
 	ui.cc5(app,image_dir+pop+png)
 
 	app.processEvents()
@@ -401,12 +523,16 @@ while (variables.STOP is 0) :
 
 		val,PLAYER1 = player1(round[round_name],PLAYER1)
 
+		if(variables.STOP is 1) :
+			break
+
 		pot += val
 		ui.PotMoney(app,str(pot))
 
 		river[0] = val
 
 		ui.p1Money(app,str(p1_money))
+		ui.player1bet.setText("")
 
 		app.processEvents()
 
@@ -419,12 +545,16 @@ while (variables.STOP is 0) :
 
 		val,PLAYER2 = player2(round[round_name],PLAYER2)
 
+		if(variables.STOP is 1) :
+			break
+
 		pot += val
 		ui.PotMoney(app,str(pot))
 
 		river[1] = val
 
 		ui.p2Money(app,str(p2_money))
+		ui.player2bet.setText("")
 		print river
 
 		ui.p1OptionsHideShow(app,False);
@@ -436,11 +566,16 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
+		bot(bot_cards , community_cards)
+
+		ui.BotPlays(app," ")
 		break
 
-		# bot()
+
+	if(variables.STOP is 1) :
+		break
 	#
-	# winner()
+	winner(player1_cards,player2_cards,bot_cards,community_cards)
 
 	app.processEvents()
 
@@ -449,8 +584,9 @@ while (variables.STOP is 0) :
 
 	print "GAME ", game, "IS OVER"
 	deck = deck + popped_cards
-	print len(deck)
 	game = game + 1
+
+print "GAME ENDED BY USER"
 
 if variables.STOP is 1 :
 	sys.exit(app.exec_())
