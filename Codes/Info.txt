@@ -22,7 +22,19 @@ UI funcs used are
 ------------------------------------------------------------------------------------------------------------------------------------------
 HANDEVALUATOR DOUBTS AND TODOS
 --------------------------------------------------------------------------------------------------------------------------------------------
-TO DO
+
+------------------------------------------------------------------------------------------------------------------------------------------
+IMPLEMENTATION
+
+The basic UI is working fine now. So basically, now only how the bot decided its move is yet to be done, which is the ML part.
+--For now, I have made a function -> bot(bot_cards) : which helps bot to decide so far what does it have
+--I think we should have a function that decides the probability that say bot has H9, SQ and 3 community cards are DJ,D2,C10 ; the probability that next 2 community cards result in a straight. So that way it knows whether it should raise/fold/call
+--See how other players are betting/calling to guess what to do.
+
+Where will RL come in all of this ?
+ 
+--------------------------------------------------------------------------------------------------------------------------------------------
+FUNCTION NAMES FOR REFERENCE
 
 1. implement function numbers (1),(26),(27),(28)  ---DONE---
 
