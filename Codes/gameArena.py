@@ -15,6 +15,9 @@ round = ["Preflop","Flop","Turn","River"]
 buy_in = 50
 blind = 5
 
+#skip_game variable
+skip_game = 0
+
 #variables to handle FOLD case
 PLAYER1 = 0
 PLAYER2 = 0
@@ -23,6 +26,7 @@ BOT = 0
 p1_money = p2_money = bot_money = buy_in
 
 deck = cards
+popped_cards = []
 
 #setup UI
 app = QtGui.QApplication(sys.argv)
@@ -34,6 +38,47 @@ ui.show()
 #shuffle cards
 def shuffle () :
 	random.shuffle(deck)
+
+#skip game ?
+def skipGame () :
+
+	global skip_game
+	global pot
+	global game
+	global deck
+	global popped_cards
+
+	if([PLAYER1,PLAYER2,BOT].count(2) is 2) :
+		if(PLAYER1 is not 2) :
+			global p1_money
+			p1_money += pot
+			pot = 0
+		elif(PLAYER2 is not 2) :
+			global p2_money
+			p2_money += pot
+			pot = 0
+		else :
+			global bot_money
+			bot_money += pot
+			pot = 0
+
+		ui.p1Money(app,str(p1_money))
+		ui.p2Money(app,str(p2_money))
+		ui.BotMoney(app,str(bot_money))
+
+		ui.PotMoney(app,str(pot))
+
+		app.processEvents()
+
+		time.sleep(2)
+
+		print "GAME ", game, "IS OVER"
+		deck = deck + popped_cards
+		game = game + 1
+		print len(deck),"**"
+		skip_game = 1
+
+	return skip_game
 
 def card_checker(player_cards,community_cards) :
 
@@ -58,7 +103,7 @@ def card_checker(player_cards,community_cards) :
 	elif len(onePair(player_cards+community_cards)) is not 0 :
 		return 9,onePair(player_cards+community_cards), high_card
 	else :
-		return 0,[],high_card
+		return 10,[],high_card
 
 
 #GAME deciding who won
@@ -79,6 +124,9 @@ def winner(player1_cards,player2_cards,bot_cards,community_cards) :
 	best_hand_3 = card_checker(bot_cards,community_cards)[0]
 	best_card_3 = card_checker(bot_cards,community_cards)[1]
 	high_card_3 = card_checker(bot_cards,community_cards)[2]
+
+	print PLAYER1, PLAYER2, BOT
+	# if(best_hand_1 < best_hand_2 and best_hand_1 < best_hand_3)	q2
 
 
 
@@ -192,9 +240,13 @@ while (variables.STOP is 0) :
 	#set initial UI and variables at the start of each game
 	round_name = 0        # to update the game round
 
+	skip_game = 0
+
 	PLAYER1 = 0
 	PLAYER2 = 0
 	BOT = 0
+
+	pot = 0
 
 	bot_cards = []
 	player1_cards = []
@@ -274,8 +326,11 @@ while (variables.STOP is 0) :
 		else :
 			ui.setP1Opt(app,1)
 
-		ui.p1OptionsHideShow(app,True);
-		ui.p2OptionsHideShow(app,False);
+		ui.p1OptionsHideShow(app,True)
+		ui.p2OptionsHideShow(app,False)
+
+		if(skipGame() is 1) :
+			break
 
 		val,PLAYER1 = player1(round[round_name],PLAYER1)
 
@@ -290,8 +345,8 @@ while (variables.STOP is 0) :
 
 		app.processEvents()
 
-		ui.p1OptionsHideShow(app,False);
-		ui.p2OptionsHideShow(app,True);
+		ui.p1OptionsHideShow(app,False)
+		ui.p2OptionsHideShow(app,True)
 
 		if(flag==0) :
 			flag = 1
@@ -300,6 +355,9 @@ while (variables.STOP is 0) :
 		ui.setP2Opt(app,callCheck)
 
 		app.processEvents()
+
+		if(skipGame() is 1) :
+			break
 
 		val,PLAYER2 = player2(round[round_name],PLAYER2)
 
@@ -315,8 +373,11 @@ while (variables.STOP is 0) :
 		ui.player2bet.setText("")
 		print preflop
 
-		ui.p1OptionsHideShow(app,False);
-		ui.p2OptionsHideShow(app,False);
+		ui.p1OptionsHideShow(app,False)
+		ui.p2OptionsHideShow(app,False)
+
+		if(skipGame() is 1) :
+			break
 
 		ui.BotPlays(app,"Bot is thinking..")
 
@@ -331,6 +392,9 @@ while (variables.STOP is 0) :
 
 	if(variables.STOP is 1) :
 		break
+
+	if(skip_game is 1) :
+		continue
 
 
 	round_name = round_name + 1
@@ -363,8 +427,11 @@ while (variables.STOP is 0) :
 
 		ui.setP1Opt(app,1)
 
-		ui.p1OptionsHideShow(app,True);
-		ui.p2OptionsHideShow(app,False);
+		ui.p1OptionsHideShow(app,True)
+		ui.p2OptionsHideShow(app,False)
+
+		if(skipGame() is 1) :
+			break
 
 		val,PLAYER1 = player1(round[round_name],PLAYER1)
 
@@ -388,6 +455,9 @@ while (variables.STOP is 0) :
 
 		app.processEvents()
 
+		if(skipGame() is 1) :
+			break
+
 		val,PLAYER2 = player2(round[round_name],PLAYER2)
 
 		if(variables.STOP is 1) :
@@ -402,8 +472,11 @@ while (variables.STOP is 0) :
 		ui.player2bet.setText("")
 		print flop
 
-		ui.p1OptionsHideShow(app,False);
-		ui.p2OptionsHideShow(app,False);
+		ui.p1OptionsHideShow(app,False)
+		ui.p2OptionsHideShow(app,False)
+
+		if(skipGame() is 1) :
+			break
 
 		ui.BotPlays(app,"Bot is thinking..")
 
@@ -420,6 +493,9 @@ while (variables.STOP is 0) :
 
 	if(variables.STOP is 1) :
 		break
+
+	if(skip_game is 1) :
+		continue
 
 	#
 	#
@@ -440,8 +516,11 @@ while (variables.STOP is 0) :
 	while(True) :
 		ui.setP1Opt(app,1)
 
-		ui.p1OptionsHideShow(app,True);
-		ui.p2OptionsHideShow(app,False);
+		ui.p1OptionsHideShow(app,True)
+		ui.p2OptionsHideShow(app,False)
+
+		if(skipGame() is 1) :
+			break
 
 		val,PLAYER1 = player1(round[round_name],PLAYER1)
 
@@ -458,12 +537,15 @@ while (variables.STOP is 0) :
 
 		app.processEvents()
 
-		ui.p1OptionsHideShow(app,False);
-		ui.p2OptionsHideShow(app,True);
+		ui.p1OptionsHideShow(app,False)
+		ui.p2OptionsHideShow(app,True)
 
 		ui.setP2Opt(app,1)
 
 		app.processEvents()
+
+		if(skipGame() is 1) :
+			break
 
 		val,PLAYER2 = player2(round[round_name],PLAYER2)
 
@@ -479,8 +561,11 @@ while (variables.STOP is 0) :
 		ui.player2bet.setText("")
 		print turn
 
-		ui.p1OptionsHideShow(app,False);
-		ui.p2OptionsHideShow(app,False);
+		ui.p1OptionsHideShow(app,False)
+		ui.p2OptionsHideShow(app,False)
+
+		if(skipGame() is 1) :
+			break
 
 		ui.BotPlays(app,"Bot is thinking..")
 
@@ -497,6 +582,9 @@ while (variables.STOP is 0) :
 
 	if(variables.STOP is 1) :
 		break
+
+	if(skip_game is 1) :
+		continue
 
 
 
@@ -518,8 +606,11 @@ while (variables.STOP is 0) :
 	while(True) :
 		ui.setP1Opt(app,1)
 
-		ui.p1OptionsHideShow(app,True);
-		ui.p2OptionsHideShow(app,False);
+		ui.p1OptionsHideShow(app,True)
+		ui.p2OptionsHideShow(app,False)
+
+		if(skipGame() is 1) :
+			break
 
 		val,PLAYER1 = player1(round[round_name],PLAYER1)
 
@@ -536,12 +627,15 @@ while (variables.STOP is 0) :
 
 		app.processEvents()
 
-		ui.p1OptionsHideShow(app,False);
-		ui.p2OptionsHideShow(app,True);
+		ui.p1OptionsHideShow(app,False)
+		ui.p2OptionsHideShow(app,True)
 
 		ui.setP2Opt(app,1)
 
 		app.processEvents()
+
+		if(skipGame() is 1) :
+			break
 
 		val,PLAYER2 = player2(round[round_name],PLAYER2)
 
@@ -557,8 +651,11 @@ while (variables.STOP is 0) :
 		ui.player2bet.setText("")
 		print river
 
-		ui.p1OptionsHideShow(app,False);
-		ui.p2OptionsHideShow(app,False);
+		ui.p1OptionsHideShow(app,False)
+		ui.p2OptionsHideShow(app,False)
+
+		if(skipGame() is 1) :
+			break
 
 		ui.BotPlays(app,"Bot is thinking..")
 
@@ -574,6 +671,9 @@ while (variables.STOP is 0) :
 
 	if(variables.STOP is 1) :
 		break
+
+	if(skip_game is 1) :
+		continue
 	#
 	winner(player1_cards,player2_cards,bot_cards,community_cards)
 

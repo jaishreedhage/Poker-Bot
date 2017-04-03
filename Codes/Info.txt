@@ -21,6 +21,8 @@ UI funcs used are
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 HANDEVALUATOR DOUBTS AND TODOS
+
+--if 2 players fold, then money should go to him without any further rounds played.
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------------------------------------
@@ -32,7 +34,7 @@ The basic UI is working fine now. So basically, now only how the bot decided its
 --See how other players are betting/calling to guess what to do.
 
 Where will RL come in all of this ?
- 
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 FUNCTION NAMES FOR REFERENCE
 
