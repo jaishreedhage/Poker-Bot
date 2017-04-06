@@ -244,9 +244,9 @@ def straight(hand) :
 
     # Straight of Highest order handled here
     if(hand_rank[0:5] == [13, 12, 11, 10, 9]):
-        spl_straight = (spl_hand[0:5])
-        spl_straight.reverse()
-        return ['10','J','Q','K','A']
+		spl_straight = (spl_hand[0:5])
+		spl_straight.reverse()
+		return spl_straight
 
     else :
         straight_list = []
@@ -322,11 +322,12 @@ def fullHouse(hand):
 # print twoPair(hand)
 # print fullHouse(hand)
 # hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
-hand  = ['DJ', 'C9', 'S10', 'H8', 'D6','S7','H9']
+hand  = ['DJ', 'CK', 'S10', 'HQ', 'D6','SA','H9']
 # hand = ['DK', 'C3', 'D7', 'HQ', 'HA']
 #hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
 # hand  = ['DA','D7','H6','S8','S9','C10','HK']
-hand = ['HJ','C9','H10','H8','D6','H7','H9']
+
+# hand = ['DJ','C9','S10','H8','D6','S7','H9']
 print straight(hand)
 # print twoPair(hand),hand
 # print straight(hand)
