@@ -35,6 +35,21 @@ card_rank2 = { 'A' : 1,
 #card suit
 suit = ['D','H','C','S']
 
+#function returning the card list from a list of card values
+def valuetoCard(card_value_list,hand):
+	hand = sorted(hand,key = lambda x : card_rank2[''.join((list(x))[1:])])
+	final_hand = []
+	value = lambda x : card_rank2[''.join((list(x))[1:])]
+	for card_value in card_value_list:
+		count = 1
+		for card in hand:
+			if value(card) == card_value and (count == 1):
+				final_hand.append(card)
+				count += 1
+				continue
+
+	return final_hand
+
 #function scrapping off a set of cards with same numeric rank or value
 def cardScrapper(card_list,value):
 	scrap_list = []
@@ -78,6 +93,7 @@ def threeOfAKind (hand) :
 def fourOfAKind (hand) :
 	no_of_cards = len(hand)
 	four_of_kind = []
+
 	for i in range (0,no_of_cards) :
 		count = 1
 		flag=0
@@ -136,6 +152,7 @@ def twoPair (hand) :
 				card_pair.append(card_value)
 			count_pair = count_pair + 1
 
+
 		elif (count==2 and count_pair >= 2) :
 			card_value = hand[i][1:]
 		 	card_pair.append(card_value)				# CHANGED := made the two pair code more efficient as it wasnt working for a test case hand = ['CA', 'HA', 'CK', 'C10', 'SK', 'CJ', 'H10']
@@ -154,6 +171,7 @@ def twoPair (hand) :
 def flush (hand) :
 	no_of_cards = len(hand)
 	flush_suit = []
+
 	for i in range (0,len(suit)) :
 		count = 0
 		for j in range (0,no_of_cards) :
@@ -190,55 +208,64 @@ def royalFlush (hand) :
 #returns False if no straight is possible
 #handling seperately the case for the straight between [10 J Q K A] seperately
 
-# TODO := Here if i get a [10,A] as my inital cards and i have [Q,K,{Card Set} - {10,J,K,Q,A}] so i want to return the possible straights too
+def straight(hand) :
+    hand = list(set(hand))
+    #print "given hand = ",hand
+    spl_hand = sorted(hand,key = lambda x : card_rank[''.join((list(x))[1:])],reverse = True) #list declared in order to seperately handle [10 J Q K A]
+    hand = sorted(hand,key = lambda x : card_rank2[''.join((list(x))[1:])])
 
-def straight (hand):
-	spl_hand = hand
-	spl_hand = sorted(hand,key = lambda x : card_rank[''.join((list(x))[1:])],reverse = True) #list declared in order to seperately handle [10 J Q K A]
-	hand = sorted(hand,key = lambda x : card_rank2[''.join((list(x))[1:])])
+    #print "spl_hand = " + str(spl_hand)
+    #print "hand = " + str(hand)
 
-	spl_straight = []
-	hand_value = []
-	hand_rank = []		#list taken in order to make comparison easier
-	for card in hand:
-		hand_value.append(card_rank2[''.join((list(card))[1:])])
+    spl_straight = []
+    hand_value = []
+    hand_rank = []		#list taken in order to make comparison easier
+    for card in hand:
+        hand_value.append(card_rank2[''.join((list(card))[1:])])
 
-	for card in spl_hand:
-		hand_rank.append(card_rank[''.join((list(card))[1:])])
+    for card in spl_hand:
+        hand_rank.append(card_rank[''.join((list(card))[1:])])
 
-	def evaluateStraight(check_list):
-		count = 0
-		for i in range(0,len(check_list)-1) :
-			if (check_list[i+1] - check_list[i] == 1) :
-				count = count + 1
-			else :
-				break
-		if (count == len(check_list)-1) :
-			return True
-		else :
-			return False
+    #print "hand_value = " + str(hand_value)
+    #print "hand_rank = " + str(hand_rank)
 
-	# Straight of Highest order handled here
-	if(hand_rank[0:5] == [13, 12, 11, 10, 9]):
-		spl_straight = (spl_hand[0:5])
-		spl_straight.reverse()
-		return spl_straight
+    def evaluateStraight(check_list):
+        count = 0
 
-	else :
-		straight_list = []
-		index = 0
-		straight_flag = 0
-		for i in range(0,(len(hand))%5 + 1):
-			check_list = hand_value[i : 5 + i]
-			if (evaluateStraight(check_list) and (check_list > straight_list)) :
-				straight_list = check_list
-				index = i
-				straight_flag = 1
+        for i in range(0,len(check_list)-1) :
+            if (check_list[i+1] - check_list[i] == 1) :
+                count = count + 1
+            else :
+                break
+        if (count == len(check_list)-1) :
+            return True
+        else :
+            return False
 
-		if (straight_flag) :
-			return hand[index : 5 + index]
-		else :
-			return []
+    # Straight of Highest order handled here
+    if(hand_rank[0:5] == [13, 12, 11, 10, 9]):
+        spl_straight = (spl_hand[0:5])
+        spl_straight.reverse()
+        return ['10','J','Q','K','A']
+
+    else :
+        straight_list = []
+        index = 0
+        straight_flag = 0
+        hand_value = list(set(hand_value))
+        hand_value.sort()
+        for i in range(0,(len(hand_value))%5 + 1):
+            check_list = hand_value[i : 5 + i]
+            #print "check_list = " + str(check_list)
+            if (evaluateStraight(check_list) and (check_list > straight_list)) :
+                straight_list = check_list
+                index = i
+                straight_flag = 1
+
+        if (straight_flag) :
+            return valuetoCard(straight_list,hand)
+        else :
+            return []
 
 #check for straight flush in a hand of 5 or more cards
 #returns False if not a straight flush else returns the hand sequence
@@ -257,6 +284,9 @@ def straightFlush(hand):
 
 	straight_flush = sorted(straight_flush,key = lambda x : card_rank[''.join((list(x))[1:])])
 	return straight_flush
+
+
+
 
 
 #function to check whether there is a full house in a given hand of cards returns empty or the full house sequence
@@ -284,7 +314,7 @@ def fullHouse(hand):
 	return full_house
 
 #hand = ['D4','SA','DA','H4','C4','DA']
-#hand = ['D1','H2','S5','C4','H3','S6','D7']
+# hand = ['D1','H2','S5','C4','H3','S6','D7']
 #hand = ['DJ','SA','H10','H7','CK','D4','SQ']
 # hand = ['DJ', 'H7', 'S2', 'SJ', 'S2', 'C7']
 # hand = ['D10','HQ','H10','SJ','CQ','HJ','C9']
@@ -294,6 +324,10 @@ def fullHouse(hand):
 # hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
 hand  = ['DJ', 'C9', 'S10', 'H8', 'D6','S7','H9']
 # hand = ['DK', 'C3', 'D7', 'HQ', 'HA']
+#hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
+# hand  = ['DA','D7','H6','S8','S9','C10','HK']
+hand = ['DJ','C9','S10','H8','D6','S7','H9']
+print straight(hand)
 # print twoPair(hand),hand
 # print straight(hand)
 # print twoPair(hand)
