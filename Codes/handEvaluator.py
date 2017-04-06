@@ -256,7 +256,6 @@ def straight(hand) :
         hand_value.sort()
         for i in range(0,(len(hand_value))%5 + 1):
             check_list = hand_value[i : 5 + i]
-            #print "check_list = " + str(check_list)
             if (evaluateStraight(check_list) and (check_list > straight_list)) :
                 straight_list = check_list
                 index = i
@@ -273,16 +272,17 @@ def straight(hand) :
 # Test case => ['CA', 'HA', 'CK', 'CQ', 'CJ', 'C10', 'H2']
 def straightFlush(hand):
 	straight_flush  = []
-	if flush(hand) == 'null':
-		if straight(hand) == []:
-			return straight_flush
+	if flush(hand) == []:
+		return straight_flush
 
 	suit_flush = flush(hand)
-	for card in hand:
-		if list(card)[0] == suit_flush:
-			straight_flush.append(card)
+	flush_cards = []
+	for i in range (0,len(hand)) :
+		if(hand[i][0] == suit_flush[0]) :
+			flush_cards.append(hand[i])
 
-	straight_flush = sorted(straight_flush,key = lambda x : card_rank[''.join((list(x))[1:])])
+	straight_flush = straight(flush_cards)
+
 	return straight_flush
 
 
@@ -326,12 +326,13 @@ hand  = ['DJ', 'CK', 'S10', 'HQ', 'D6','SA','H9']
 # hand = ['DK', 'C3', 'D7', 'HQ', 'HA']
 #hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
 # hand  = ['DA','D7','H6','S8','S9','C10','HK']
+
 # hand = ['DJ','C9','S10','H8','D6','S7','H9']
 print straight(hand)
 # print twoPair(hand),hand
 # print straight(hand)
 # print twoPair(hand)
-# print straightFlush(hand)
+print straightFlush(hand)
 # print threeOfAKind(hand)
 #print fullHouse(hand)
 #print straight(hand)
