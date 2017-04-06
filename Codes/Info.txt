@@ -22,7 +22,10 @@ UI funcs used are
 ------------------------------------------------------------------------------------------------------------------------------------------
 HANDEVALUATOR DOUBTS AND TODOS
 
---if 2 players fold, then money should go to him without any further rounds played.
+1.if 2 players fold, then money should go to him without any further rounds played.---> DONE
+2.win_between_two_players is not considering cases like two three of a kind exist, and the one with greater three of a kind would be given preference; and many other such cases possible in other hands
+3.case when high card is similar, the second high card must be considered, that case has to be taken care of.
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------------------------------------

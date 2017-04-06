@@ -292,7 +292,7 @@ def fullHouse(hand):
 # print twoPair(hand)
 # print fullHouse(hand)
 # hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
-#hand  = ['DA','D7','H6','S8','S9','C10']
+hand  = ['DJ', 'C9', 'S10', 'H8', 'D6','S7','H9']
 # hand = ['DK', 'C3', 'D7', 'HQ', 'HA']
 # print twoPair(hand),hand
 # print straight(hand)

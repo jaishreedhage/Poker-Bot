@@ -75,11 +75,11 @@ def skipGame () :
 		print "GAME ", game, "IS OVER"
 		deck = deck + popped_cards
 		game = game + 1
-		print len(deck),"**"
 		skip_game = 1
 
 	return skip_game
 
+#card checker for different players
 def card_checker(player_cards,community_cards) :
 
 	high_card = highCard(player_cards)
@@ -106,29 +106,80 @@ def card_checker(player_cards,community_cards) :
 		return 10,[],high_card
 
 
+#decide between two players
+def win_between_two_players(player1,player2,community_cards,P1,P2) :
+
+	if(P1 is 2 and P2 is 2) :
+		return [],0
+	elif(P1 is 2) :
+		return player2,2
+	elif(P2 is 2) :
+		return player1,1
+	else :
+		#player1
+		best_hand_1 = card_checker(player1,community_cards)[0]
+		best_card_1 = card_checker(player1,community_cards)[1]
+		high_card_1 = card_checker(player1,community_cards)[2]
+
+		#player2
+		best_hand_2 = card_checker(player2,community_cards)[0]
+		best_card_2 = card_checker(player2,community_cards)[1]
+		high_card_2 = card_checker(player2,community_cards)[2]
+
+		print best_hand_1,best_hand_2
+
+		if(best_hand_1 > best_hand_2) :
+			return player2,2
+		elif(best_hand_1 < best_hand_2) :
+			return player1,1
+		else :
+			#TODO:for now not considering the fact that two three of a kind exist, and the one with greater three of a kind would be given preference
+			if(card_rank[high_card_1[1:]] > card_rank[high_card_2[1:]] ) :
+				return player1,1
+			else :
+				return player2,2
+			#not considering case when high cards are equal, have to see the next highest high card
+
+
 #GAME deciding who won
 def winner(player1_cards,player2_cards,bot_cards,community_cards) :
 	print "CHECKING WHO WON THE GAME ",game
 
-	#player 1
-	best_hand_1 = card_checker(player1_cards,community_cards)[0]
-	best_card_1 = card_checker(player1_cards,community_cards)[1]
-	high_card_1 = card_checker(player1_cards,community_cards)[2]
+	global PLAYER1
+	global PLAYER2
+	global BOT
+	global bot_money
+	global p1_money
+	global p2_money
 
-	#player 2
-	best_hand_2 = card_checker(player2_cards,community_cards)[0]
-	best_card_2 = card_checker(player2_cards,community_cards)[1]
-	high_card_2 = card_checker(player2_cards,community_cards)[2]
+	print player1_cards,player2_cards,bot_cards,community_cards
 
-	#bot
-	best_hand_3 = card_checker(bot_cards,community_cards)[0]
-	best_card_3 = card_checker(bot_cards,community_cards)[1]
-	high_card_3 = card_checker(bot_cards,community_cards)[2]
+	PLAYERS = [PLAYER1,PLAYER2,BOT]
 
 	print PLAYER1, PLAYER2, BOT
-	# if(best_hand_1 < best_hand_2 and best_hand_1 < best_hand_3)	q2
 
+	player,person = win_between_two_players(player1_cards,player2_cards,community_cards,PLAYER1,PLAYER2)
+	if player is [] :
+		bot_money += pot
+		ui.BotMoney(app,str(bot_money))
+	else :
+		person_temp = person
+		player,person = win_between_two_players(player,bot_cards,community_cards,PLAYERS[person-1],BOT)
+		print player
+		if(person is 2):
+			print "PLAYER %d won" %(person+1)
+			bot_money += pot
+			ui.BotMoney(app,str(bot_money))
+		else :
+			print "PLAYER %d won" %person_temp
+			if(person_temp is 1):
+				p1_money += pot
+				ui.p1Money(app,str(p1_money))
+			else :
+				p2_money += pot
+				ui.p2Money(app,str(p2_money))
 
+	app.processEvents()
 
 
 
@@ -153,7 +204,7 @@ def player1(round,PLAYER1) :
 		value = blind
 		global p1_money
 		p1_money = p1_money - blind
-		print p1_money
+		# print p1_money
 	elif round is not "Preflop" and PLAYER1 is 2 :
 		pass
 	elif round is not "Preflop" and PLAYER1 is not 2 :
@@ -675,7 +726,8 @@ while (variables.STOP is 0) :
 	if(skip_game is 1) :
 		continue
 	#
-	winner(player1_cards,player2_cards,bot_cards,community_cards)
+	person = winner(player1_cards,player2_cards,bot_cards,community_cards)
+
 
 	app.processEvents()
 
