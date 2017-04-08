@@ -187,13 +187,15 @@ def flush (hand) :
 def royalFlush (hand) :
 	royal_flush = 'null'
 	flush_suit = flush(hand)
+	print flush_suit
 	if (flush_suit == []) :
 		return royal_flush
 	else :
 		no_of_cards = len(hand)
 		count = 0
 		for i in range (0,no_of_cards) :
-			if (hand[i][0] == flush_suit and ( hand[i][1:] == '10' or hand[i][1:] == 'J' or hand[i][1:] == 'Q' or hand[i][1:] == 'K' or hand[i][1:] == 'A')) :
+			print hand[i][1:]
+			if (hand[i][0] == flush_suit[0] and ( hand[i][1:] == '10' or hand[i][1:] == 'J' or hand[i][1:] == 'Q' or hand[i][1:] == 'K' or hand[i][1:] == 'A' )) :
 				count = count + 1
 
 		if (count is 5) :
@@ -334,7 +336,8 @@ print straightFlush(hand)
 # print threeOfAKind(hand)
 #print fullHouse(hand)
 #print straight(hand)
-
+# hand = ['DA','D10','DJ','DK','DQ','C3','H4']
+# print royalFlush(hand)
 # hand = ['D10','HQ','H10','S10','CQ','HJ','C9']
 
 #print threeOfAKind(hand)
