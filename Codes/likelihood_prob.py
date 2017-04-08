@@ -1,7 +1,6 @@
 '''File Contains the likelihood probabilites i.e P(x/w(i))'''
 
 
-
     #   Royal      Straight   4kind    Full     Flush     Straight  3kind    2pair    1pair     high card
     #   Flush     Flush               House
 likelihood = {
