@@ -39,7 +39,7 @@ ui.show()
 def shuffle () :
 	random.shuffle(deck)
 
-#skip game ?
+#skip game as two players have folded
 def skipGame () :
 
 	global skip_game

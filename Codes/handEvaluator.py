@@ -226,8 +226,6 @@ def straight(hand) :
     for card in spl_hand:
         hand_rank.append(card_rank[''.join((list(card))[1:])])
 
-    #print "hand_value = " + str(hand_value)
-    #print "hand_rank = " + str(hand_rank)
 
     def evaluateStraight(check_list):
         count = 0
