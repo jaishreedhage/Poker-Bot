@@ -194,11 +194,11 @@ def royalFlush (hand) :
 		no_of_cards = len(hand)
 		count = 0
 		for i in range (0,no_of_cards) :
-			print hand[i][1:]
-			if (hand[i][0] == flush_suit[0] and ( hand[i][1:] == '10' or hand[i][1:] == 'J' or hand[i][1:] == 'Q' or hand[i][1:] == 'K' or hand[i][1:] == 'A' )) :
+			if (hand[i][0] == flush_suit[0] and ( hand[i][1:] == '10' or hand[i][1:] == 'J' or hand[i][1:] == 'Q' or hand[i][1:] == 'K' or hand[i][1:] == 'A')):
 				count = count + 1
 
-		if (count is 5) :
+
+		if (count == 5) :
 			royal_flush = 'yes'
 
 	return royal_flush
@@ -322,17 +322,20 @@ def fullHouse(hand):
 # print twoPair(hand)
 # print fullHouse(hand)
 # hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
-hand  = ['DJ', 'CK', 'S10', 'HQ', 'D6','SA','H9']
+# hand  = ['DJ', 'CK', 'S10', 'HQ', 'D6','SA','H9']
+#hand = ['DJ','HJ']
+# print onePair(hand)
 # hand = ['DK', 'C3', 'D7', 'HQ', 'HA']
 #hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
 # hand  = ['DA','D7','H6','S8','S9','C10','HK']
-
+# hand = ['DA','HA','C3','DQ','DA','C2','H4']
+# print royalFlush(hand)
 # hand = ['DJ','C9','S10','H8','D6','S7','H9']
-print straight(hand)
+# print straight(hand)
 # print twoPair(hand),hand
 # print straight(hand)
 # print twoPair(hand)
-print straightFlush(hand)
+# print straightFlush(hand)
 # print threeOfAKind(hand)
 #print fullHouse(hand)
 #print straight(hand)

@@ -7,6 +7,7 @@ prior_probabilities = [1.50e-06,1.38e-05,0.00024,0.00144,0.00198,0.00355,0.02353
 
         #   Royal     Straight    4kind       Full        Flush       Straight    3kind       2pair       1pair       high card
         #   Flush     Flush                   House
+
 likelihood = {
 
 #Clubs
