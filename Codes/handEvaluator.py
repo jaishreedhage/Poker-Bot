@@ -322,17 +322,19 @@ def fullHouse(hand):
 # print twoPair(hand)
 # print fullHouse(hand)
 # hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
-hand  = ['DJ', 'CK', 'S10', 'HQ', 'D6','SA','H9']
+# hand  = ['DJ', 'CK', 'S10', 'HQ', 'D6','SA','H9']
+hand = ['DJ','HJ']
+print onePair(hand)
 # hand = ['DK', 'C3', 'D7', 'HQ', 'HA']
 #hand = ['D10','HQ','H10','S10','CQ','HJ','CQ']
 # hand  = ['DA','D7','H6','S8','S9','C10','HK']
 
 # hand = ['DJ','C9','S10','H8','D6','S7','H9']
-print straight(hand)
+# print straight(hand)
 # print twoPair(hand),hand
 # print straight(hand)
 # print twoPair(hand)
-print straightFlush(hand)
+# print straightFlush(hand)
 # print threeOfAKind(hand)
 #print fullHouse(hand)
 #print straight(hand)
