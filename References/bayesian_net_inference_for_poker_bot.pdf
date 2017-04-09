@@ -1,0 +1,48 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html><head>
+<meta http-equiv=pragma content=nocache>
+<META HTTP-EQUIV=Expires CONTENT=-1>
+<script language="Javascript">
+    function autoSubmit(){
+        //alert("Auto submit from redirection.jsp");
+        document.forms[0].submit();
+    }
+</script>
+</head>
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<WISPAccessGatewayParam xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.acmewisp.com/WISPAccessGatewayParam.xsd">
+<Redirect>
+<AccessProcedure>1.0</AccessProcedure>
+<AccessLocation>Ahmedabad</AccessLocation>
+<LocationName>Ahmedabad</LocationName>
+<LoginURL>https://testipass.com/24online/servlet/smartclient?mode=1</LoginURL>
+<MessageType>100</MessageType>
+<ResponseCode>0</ResponseCode>
+</Redirect>
+</WISPAccessGatewayParam>
+-->
+
+
+<body onload='autoSubmit()'>
+
+<FORM ACTION="https://mahe3.dvois.com/24online/webpages/client.jsp" METHOD=POST>
+<INPUT TYPE=hidden NAME=url VALUE="http://web.mit.edu:80/16.412j/www/html/Final Projects/FIN_Terry_Mihok.pdf">
+<INPUT TYPE=hidden NAME=ipaddress VALUE="10.87.3.37">
+<INPUT TYPE="hidden" NAME="formsubmiturlIP" VALUE="172.16.16.16">
+</FORM>
+</body>
+</html>
+
