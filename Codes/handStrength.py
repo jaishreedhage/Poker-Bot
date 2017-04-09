@@ -7,8 +7,6 @@ u_wi = []
 for p in prior_probabilities:
     u_wi.append(1/p)
 
-print u_wi
-
 strength = []
 
 
