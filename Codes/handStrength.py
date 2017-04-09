@@ -54,6 +54,7 @@ def calc_strength(hand) :
         prob_wi_given_x *= prior_probabilities[i]
         prob_wi_given_x /= prob_x
 
+
         #print prob_wi_given_x
 
         strength.append(prob_wi_given_x)
@@ -72,6 +73,7 @@ def calc_strength(hand) :
 
     prob_p_for_lower_max_index = 0.0
 
+
     for i in range (0,max_hand_index) :
         prob_wi_given_x = strength[i];
         prob_wi_given_x *= (u_wi[i])
@@ -84,6 +86,7 @@ def calc_strength(hand) :
     s_x = u_x + prob_p_for_lower_max_index
 
     return s_x
+
 
 # hand = ['DA','D10','DJ','DQ','DK','C3','H4']
 # hand = ['DA','HA','C3','DK','SA','C2','HJ']

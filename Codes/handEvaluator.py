@@ -187,6 +187,7 @@ def flush (hand) :
 def royalFlush (hand) :
 	royal_flush = 'null'
 	flush_suit = flush(hand)
+	print flush_suit
 	if (flush_suit == []) :
 		return royal_flush
 	else :
@@ -338,7 +339,8 @@ def fullHouse(hand):
 # print threeOfAKind(hand)
 #print fullHouse(hand)
 #print straight(hand)
-
+# hand = ['DA','D10','DJ','DK','DQ','C3','H4']
+# print royalFlush(hand)
 # hand = ['D10','HQ','H10','S10','CQ','HJ','C9']
 
 #print threeOfAKind(hand)
