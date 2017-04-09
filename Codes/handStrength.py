@@ -32,7 +32,7 @@ def check_best_hand(hand):
     else:
         return 9
 
-def calc_strength(hand) :
+def handStrength(hand) :
     prob_x = 0.0
     for i in range (0,10) :
         p = 1
@@ -64,10 +64,10 @@ def calc_strength(hand) :
     #print max_strength,max_index
 
     max_hand_index = check_best_hand(hand)
-    print "mhi = ",max_hand_index
+    #print "mhi = ",max_hand_index
     u_x = u_wi[max_hand_index]
 
-    print "u_x = ",u_x
+    #print "u_x = ",u_x
 
     prob_p_for_lower_max_index = 0.0
 
@@ -79,7 +79,7 @@ def calc_strength(hand) :
         prob_p_for_lower_max_index += prob_wi_given_x
 
 
-    print "pblm = ",prob_p_for_lower_max_index
+    #print "pblm = ",prob_p_for_lower_max_index
 
     s_x = u_x + prob_p_for_lower_max_index
 
