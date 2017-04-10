@@ -17,6 +17,7 @@ for i in range(0,2):
 
 print "Hole Card hand = ",hand
 
+
 def actionValueGenerator(act):
     action_dict = {}
     for action in actions:
