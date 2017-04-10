@@ -13,18 +13,15 @@ csv_flop = "flop_base"
 csv_turn = 'turn_base'
 csv_river = 'river_base'
 
-<<<<<<< HEAD
-=======
 headers = ['Fold','Check','Call','Bet-1','Bet-2','Bet-5','Bet-7']
 
->>>>>>> e4313a675293093b01cc3fb12bd729f933cf22f0
 image_dir = "Images/"
 png = ".png"
 pot = 0
 game = 1
 round = ["Preflop","Flop","Turn","River"]
-buy_in = 50
-blind = 5
+buy_in = 80
+blind = 3
 
 #skip_game variable
 skip_game = 0
@@ -57,22 +54,22 @@ def bot_action(action,game_round,BOT) :
 
 	value = 0
 
-	if action is "Fold" :
+	if action == "Fold" :
 		print "HELLO"
 		BOT = 2
-	elif action is "Call" or "Check":
+	elif action == "Call" or action == "Check":
 		value = max(game_round) - game_round[2]
-	elif action is "Bet-1" :
+	elif action == "Bet-1" :
 		value = max(game_round) + 1
-	elif action is "Bet-2" :
+	elif action == "Bet-2" :
 		value = max(game_round) + 2
-	elif action is "Bet-5" :
+	elif action == "Bet-5" :
 		value = max(game_round) + 5
-	elif action is "Bet-7" :
+	elif action == "Bet-7" :
 		value = max(game_round) + 7
 
-	bot_money -= val
-	print bot_money
+	bot_money -= value
+	print bot_money,value,game_round
 
 	return value,BOT
 
@@ -295,6 +292,7 @@ def player1(round,PLAYER1) :
 		while(variables.P1CALLCHECK is 0 and variables.P1BETRAISE is 0 and variables.P1FOLD is 0 and variables.STOP is 0) :
 			time.sleep(0.1)
 			app.processEvents()
+
 		if(variables.STOP is 1) :
 			return value,PLAYER1
 		if(variables.P1FOLD is 1) :
@@ -658,21 +656,9 @@ while (variables.STOP is 0) :
 
 			app.processEvents()
 
-<<<<<<< HEAD
-		hand_strength = handStrength(bot_cards + community_cards)
-		read_file(csv_flop,hand_strength)
-		if(hand_strength not in flop_base.keys()):
-			act = random.choice(actions)
-			print "Random Chosen Action Flop = ",act
-			money = money - act[1]
-			#perform action
-			#updation of knowledge Base
-			flop_base[hand_strength] = actionValueGenerator(act)
-=======
 			time.sleep(3)
 
 			hand_strength = handStrength(bot_cards + community_cards)
->>>>>>> e4313a675293093b01cc3fb12bd729f933cf22f0
 
 			max_choice,max_choice_idx,idx = read_file(csv_flop,hand_strength)
 
@@ -681,10 +667,8 @@ while (variables.STOP is 0) :
 			if max_choice == 0 :
 				max_choice_idx = random.randint(0,6)
 				print "max_choice = ",max_choice_idx
-				print "Random Chosen Action Flop = ", headers[max_choice_idx]
 
-			else :
-				print "Random Chosen Action Flop = ", headers[max_choice_idx]
+			print "Random Chosen Action Flop = ", headers[max_choice_idx]
 
 			val,BOT = bot_action(headers[max_choice_idx],flop,BOT)
 
@@ -808,29 +792,33 @@ while (variables.STOP is 0) :
 
 			hand_strength = handStrength(bot_cards + community_cards)
 
-			if(hand_strength not in river_base.keys()):
-				act = random.choice(actions)
-				print "Random Chosen Action River = ",act
-				money = money - act[1]
-				#perform action
-				#updation of knowledge Base
-				river_base[hand_strength] = actionValueGenerator(act)
+			max_choice,max_choice_idx,idx = read_file(csv_turn,hand_strength)
 
-			else:
-				action_dict = river_base[hand_strength]
-				max_value = max(action_dict.values())
-				act = 0
-				for action in action_dict:
-					if(action_dict[action] == max_value):
-						act = action
-						break
+			print hand_strength,max_choice,max_choice_idx,idx
 
-				print "River Chosen Action = ",act
-				money = money - act[1]
+			if max_choice == 0 :
+				max_choice_idx = random.randint(0,6)
+				print "max_choice = ",max_choice_idx
+
+			print "Random Chosen Action Flop = ", headers[max_choice_idx]
+
+			val,BOT = bot_action(headers[max_choice_idx],turn,BOT)
+
+			print val,BOT
+
+			pot += val
+			ui.PotMoney(app,str(pot))
+
+			flop[2] += val
+
+			ui.BotMoney(app,str(bot_money))
+
+			ui.BotPlays(app,"Bot has decided to "+headers[max_choice_idx])
 
 			time.sleep(2)
 
 			ui.BotPlays(app,"")
+
 		#
 		PLAYERS = [PLAYER1,PLAYER2,BOT]
 		eq = -1
@@ -930,34 +918,45 @@ while (variables.STOP is 0) :
 		if(skipGame() is 1) :
 			break
 
-		ui.BotPlays(app,"Bot is thinking..")
 
-		app.processEvents()
+		if BOT is not 2 :
 
-		time.sleep(3)
+			ui.BotPlays(app,"Bot is thinking..")
 
-		hand_strength = handStrength(bot_cards + community_cards)
+			app.processEvents()
 
-		if(hand_strength not in turn_base.keys()):
-			act = random.choice(actions)
-			print "Random Chosen Action Turn = ",act
-			money = money - act[1]
-			#perform action
-			#updation of knowledge Base
-			turn_base[hand_strength] = actionValueGenerator(act)
+			time.sleep(3)
 
-		else:
-			action_dict = turn_base[hand_strength]
-			max_value = max(action_dict.values())
-			act = 0
-			for action in action_dict:
-				if(action_dict[action] == max_value):
-					act = action
-					break
-			print "Turn Chosen Action = ",act
-			money = money - act[1]
+			hand_strength = handStrength(bot_cards + community_cards)
 
-		ui.BotPlays(app," ")
+			max_choice,max_choice_idx,idx = read_file(csv_river,hand_strength)
+
+			print hand_strength,max_choice,max_choice_idx,idx
+
+			if max_choice == 0 :
+				max_choice_idx = random.randint(0,6)
+				print "max_choice = ",max_choice_idx
+
+			print "Random Chosen Action Flop = ", headers[max_choice_idx]
+
+			val,BOT = bot_action(headers[max_choice_idx],river,BOT)
+
+			print val,BOT
+
+			pot += val
+			ui.PotMoney(app,str(pot))
+
+			flop[2] += val
+
+			ui.BotMoney(app,str(bot_money))
+
+			ui.BotPlays(app,"Bot has decided to "+headers[max_choice_idx])
+
+			time.sleep(2)
+
+			ui.BotPlays(app,"")
+
+
 
 		PLAYERS = [PLAYER1,PLAYER2,BOT]
 		eq = -1
@@ -984,7 +983,7 @@ while (variables.STOP is 0) :
 
 	if(skip_game is 1) :
 		continue
-	#
+
 	person = winner(player1_cards,player2_cards,bot_cards,community_cards)
 
 
