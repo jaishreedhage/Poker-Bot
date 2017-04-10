@@ -1,5 +1,6 @@
 from handEvaluator import *
 from pokerUI import *
+from handStrength import *
 import variables
 import random
 import sys
@@ -87,7 +88,7 @@ def card_checker(player_cards,community_cards) :
 	if royalFlush(player_cards+community_cards) is "yes" :
 		return 1,royalFlush(player_cards+community_cards), high_card
 	elif len(straightFlush(player_cards+community_cards)) is not 0 :
-		print 2,straightFlush(player_cards+community_cards), high_card
+		return 2,straightFlush(player_cards+community_cards), high_card
 	elif len(fourOfAKind(player_cards+community_cards)) is not 0 :
 		return 3,fourOfAKind(player_cards+community_cards), high_card
 	elif len(fullHouse(player_cards+community_cards)) is not 0:
@@ -195,15 +196,59 @@ def bot(bot_cards,community_cards) :
 	print best_hand, best_card , high_card
 
 
+def bot_preflop(bot_cards) :
+
+	global bot_money
+
+	bet = 2
+	value = 0
+
+	if(check_best_hand(bot_cards) == 8):
+		value = max(preflop) + bet
+		bot_money -= value
+
+	print value, bot_money
+	return value
+
 
 #player1 decisions
 def player1(round,PLAYER1) :
 	value = 0
 	print "PLAYER1 is playing" , round
 	if round is "Preflop" :
-		value = blind
-		global p1_money
-		p1_money = p1_money - blind
+		# value = blind
+		# global p1_money
+		# p1_money = p1_money - blind
+		if preflop[0] is 0 :
+			value = blind
+			global p1_money
+			p1_money = p1_money - value
+		elif PLAYER1 is 2:
+			pass
+		else :
+			time.sleep(0.1)
+			app.processEvents()
+			while(variables.P1CALLCHECK is 0 and variables.P1BETRAISE is 0 and variables.P1FOLD is 0 and variables.STOP is 0) :
+				time.sleep(0.1)
+				app.processEvents()
+			if(variables.STOP is 1) :
+				return value,PLAYER1
+			if(variables.P1FOLD is 1) :
+				PLAYER1 = 2
+				variables.P1FOLD = 0
+			elif(variables.P1BETRAISE is 1) :
+				value = int(ui.player1bet.text())
+				print value
+				p1_money = p1_money - value
+				print p1_money
+				variables.P1BETRAISE = 0
+			else :
+				#take into account the different rounds
+				value = max(preflop) - preflop[0]
+				p1_money = p1_money - value
+				print p1_money
+				variables.P1CALLCHECK = 0
+
 		# print p1_money
 	elif round is not "Preflop" and PLAYER1 is 2 :
 		pass
@@ -363,7 +408,7 @@ while (variables.STOP is 0) :
 
 	app.processEvents()
 
-	preflop = [blind,0,0]
+	preflop = [0]*3
 
 	#variables to handle some cases -> one bot folds other bot should know, handling call/check and bet/raise
 	flag = 0
@@ -387,6 +432,8 @@ while (variables.STOP is 0) :
 
 		if(variables.STOP is 1) :
 			break
+
+		preflop[0] += val
 
 		ui.p1Money(app,str(p1_money))
 		ui.player1bet.setText("")
@@ -415,7 +462,7 @@ while (variables.STOP is 0) :
 		if(variables.STOP is 1) :
 			break
 
-		preflop[1] = val
+		preflop[1] += val
 
 		pot += val
 		ui.PotMoney(app,str(pot))
@@ -430,16 +477,56 @@ while (variables.STOP is 0) :
 		if(skipGame() is 1) :
 			break
 
+		print "Bot is thinking...."
 		ui.BotPlays(app,"Bot is thinking..")
 
 		app.processEvents()
 
 		time.sleep(3)
 
-		ui.BotPlays(app,"")
-		break
+		BOTCHECK = 0
+		val = bot_preflop(bot_cards)
+		print val
+		if val is 0	:
+			val = max(preflop) - preflop[2]
+			BOTCHECK = 1
+			bot_money -= val
 
-		# bot()
+		preflop[2] += val
+
+		pot += val
+		ui.PotMoney(app,str(pot))
+		ui.BotMoney(app,str(bot_money))
+
+		if BOTCHECK is 1 :
+			ui.BotPlays(app,"Bot decides to check")
+
+		else :
+			ui.BotPlays(app,"Bot decides to raise "+ val)
+
+		app.processEvents()
+
+		time.sleep(2)
+
+		ui.BotPlays(app,"")
+
+		PLAYERS = [PLAYER1,PLAYER2,BOT]
+		eq = -1
+		stopPreflop = 1
+		for i in range(0,3) :
+			if PLAYERS[i]!=2 and eq is -1:
+				eq = preflop[i]
+			if PLAYERS[i]!=2 and eq is not -1 and preflop[i]!=eq:
+				stopPreflop = 0
+				break
+
+		if stopPreflop is 1 :
+			print "THEY ARE ALL EQUAL"
+			break
+
+		else :
+			print "NO THEY ARENT EQUAL"
+
 
 	if(variables.STOP is 1) :
 		break
@@ -492,7 +579,7 @@ while (variables.STOP is 0) :
 		pot += val
 		ui.PotMoney(app,str(pot))
 
-		flop[0] = val
+		flop[0] += val
 
 		ui.p1Money(app,str(p1_money))
 		ui.player1bet.setText("")
@@ -517,7 +604,7 @@ while (variables.STOP is 0) :
 		pot += val
 		ui.PotMoney(app,str(pot))
 
-		flop[1] = val
+		flop[1] += val
 
 		ui.p2Money(app,str(p2_money))
 		ui.player2bet.setText("")
@@ -535,10 +622,45 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
-		bot(bot_cards,community_cards)
+		hand_strength = handStrength(bot_cards + community_cards)
+
+		if(hand_strength not in flop_base.keys()):
+			act = random.choice(actions)
+			print "Random Chosen Action Flop = ",act
+			money = money - act[1]
+			#perform action
+			#updation of knowledge Base
+			flop_base[hand_strength] = actionValueGenerator(act)
+
+		else:
+			action_dict = flop_base[hand_strength]
+			max_value = max(action_dict.values())
+			act = 0
+			for action in action_dict:
+				if(action_dict[action] == max_value):
+					act = action
+					break
+			print "Flop Chosen Action = ",act
+			money = money - act[1]
 
 		ui.BotPlays(app,"")
-		break
+
+		PLAYERS = [PLAYER1,PLAYER2,BOT]
+		eq = -1
+		stopFlop = 1
+		for i in range(0,3) :
+			if PLAYERS[i]!=2 and eq is -1:
+				eq = flop[i]
+			if PLAYERS[i]!=2 and eq is not -1 and flop[i]!=eq:
+				stopFlop = 0
+				break
+
+		if stopFlop is 1 :
+			print "THEY ARE ALL EQUAL"
+			break
+
+		else :
+			print "NO THEY ARENT EQUAL"
 
 
 
@@ -581,7 +703,7 @@ while (variables.STOP is 0) :
 		pot += val
 		ui.PotMoney(app,str(pot))
 
-		turn[0] = val
+		turn[0] += val
 
 		ui.p1Money(app,str(p1_money))
 		ui.player1bet.setText("")
@@ -606,7 +728,7 @@ while (variables.STOP is 0) :
 		pot += val
 		ui.PotMoney(app,str(pot))
 
-		turn[1] = val
+		turn[1] += val
 
 		ui.p2Money(app,str(p2_money))
 		ui.player2bet.setText("")
@@ -624,10 +746,50 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
-		bot(bot_cards,community_cards)
+		hand_strength = handStrength(bot_cards + community_cards)
+
+		if(hand_strength not in river_base.keys()):
+			act = random.choice(actions)
+			print "Random Chosen Action River = ",act
+			money = money - act[1]
+			#perform action
+			#updation of knowledge Base
+			river_base[hand_strength] = actionValueGenerator(act)
+
+		else:
+			action_dict = river_base[hand_strength]
+			max_value = max(action_dict.values())
+			act = 0
+			for action in action_dict:
+				if(action_dict[action] == max_value):
+					act = action
+					break
+
+			print "River Chosen Action = ",act
+			money = money - act[1]
+
+		time.sleep(2)
 
 		ui.BotPlays(app,"")
-		break
+		#
+		PLAYERS = [PLAYER1,PLAYER2,BOT]
+		eq = -1
+		stopTurn = 1
+		for i in range(0,3) :
+			if PLAYERS[i]!=2 and eq is -1:
+				eq = turn[i]
+			if PLAYERS[i]!=2 and eq is not -1 and turn[i]!=eq:
+				stopTurn = 0
+				break
+
+		if stopTurn is 1 :
+			print "THEY ARE ALL EQUAL"
+			break
+
+		else :
+			print "NO THEY ARENT EQUAL"
+
+
 
 
 
@@ -671,7 +833,7 @@ while (variables.STOP is 0) :
 		pot += val
 		ui.PotMoney(app,str(pot))
 
-		river[0] = val
+		river[0] += val
 
 		ui.p1Money(app,str(p1_money))
 		ui.player1bet.setText("")
@@ -696,7 +858,7 @@ while (variables.STOP is 0) :
 		pot += val
 		ui.PotMoney(app,str(pot))
 
-		river[1] = val
+		river[1] += val
 
 		ui.p2Money(app,str(p2_money))
 		ui.player2bet.setText("")
@@ -714,10 +876,47 @@ while (variables.STOP is 0) :
 
 		time.sleep(3)
 
-		bot(bot_cards , community_cards)
+		hand_strength = handStrength(bot_cards + community_cards)
+
+		if(hand_strength not in turn_base.keys()):
+			act = random.choice(actions)
+			print "Random Chosen Action Turn = ",act
+			money = money - act[1]
+			#perform action
+			#updation of knowledge Base
+			turn_base[hand_strength] = actionValueGenerator(act)
+
+		else:
+			action_dict = turn_base[hand_strength]
+			max_value = max(action_dict.values())
+			act = 0
+			for action in action_dict:
+				if(action_dict[action] == max_value):
+					act = action
+					break
+			print "Turn Chosen Action = ",act
+			money = money - act[1]
 
 		ui.BotPlays(app," ")
-		break
+
+		PLAYERS = [PLAYER1,PLAYER2,BOT]
+		eq = -1
+		stopRiver = 1
+		for i in range(0,3) :
+			if PLAYERS[i]!=2 and eq is -1:
+				eq = river[i]
+			if PLAYERS[i]!=2 and eq is not -1 and river[i]!=eq:
+				stopRiver = 0
+				break
+
+		if stopRiver is 1 :
+			print "THEY ARE ALL EQUAL"
+			break
+
+		else :
+			print "NO THEY ARENT EQUAL"
+
+
 
 
 	if(variables.STOP is 1) :
