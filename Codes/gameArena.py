@@ -8,6 +8,10 @@ import time
 
 #global variables
 
+csv_flop = "flop_base"
+csv_turn = 'turn_base'
+csv_river = 'river_base'
+
 image_dir = "Images/"
 png = ".png"
 pot = 0
@@ -623,7 +627,7 @@ while (variables.STOP is 0) :
 		time.sleep(3)
 
 		hand_strength = handStrength(bot_cards + community_cards)
-
+		read_file(csv_flop,hand_strength)
 		if(hand_strength not in flop_base.keys()):
 			act = random.choice(actions)
 			print "Random Chosen Action Flop = ",act
