@@ -5,6 +5,7 @@ P1FOLD = 0
 P2FOLD = 0
 P1BETRAISE = 0
 P2BETRAISE = 0
+BOT = 0
 
 file_extn = ".csv"
 csv_flop = "flop_base"

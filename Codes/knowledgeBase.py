@@ -4,7 +4,6 @@ file_extn = ".csv"
 
 
 headers = ['Fold','Check','Call','Bet-1','Bet-2','Bet-5','Bet-7']
-
 index = [0,200,500,2000,10000]
 
 def read_file(csv_file,hand_strength) :
@@ -26,7 +25,8 @@ def read_file(csv_file,hand_strength) :
     max_choice = max(choice)
     max_choice_idx = choice.index(max_choice)
 
-    print max_choice,max_choice_idx,idx          #returning col and row
+
+    return max_choice,max_choice_idx,idx            #returning value,column and row
 
 def write_file(csv_file,idx,head) :
 
@@ -36,7 +36,7 @@ def write_file(csv_file,idx,head) :
     df.set_value(idx, headers[head],240)
     df.to_csv(csv_file, index=False)
 
-
-read_file(csv_flop,500)
-write_file(csv_flop,1,2)
-read_file(csv_flop,500)
+#
+# read_file(csv_flop,500)
+# write_file(csv_flop,1,2)
+# read_file(csv_flop,500)
