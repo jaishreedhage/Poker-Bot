@@ -54,22 +54,22 @@ def bot_action(action,game_round,BOT) :
 
 	value = 0
 
-	if action is "Fold" :
+	if action == "Fold" :
 		print "HELLO"
 		BOT = 2
-	elif action is "Call" or "Check":
+	elif action == "Call" or action == "Check":
 		value = max(game_round) - game_round[2]
-	elif action is "Bet-1" :
+	elif action == "Bet-1" :
 		value = max(game_round) + 1
-	elif action is "Bet-2" :
+	elif action == "Bet-2" :
 		value = max(game_round) + 2
-	elif action is "Bet-5" :
+	elif action == "Bet-5" :
 		value = max(game_round) + 5
-	elif action is "Bet-7" :
+	elif action == "Bet-7" :
 		value = max(game_round) + 7
 
-	bot_money -= val
-	print bot_money
+	bot_money -= value
+	print bot_money,value,game_round
 
 	return value,BOT
 
@@ -663,13 +663,13 @@ while (variables.STOP is 0) :
 
 			print hand_strength,max_choice,max_choice_idx,idx
 
-			if max_choice == 0 :
-				max_choice_idx = random.randint(0,6)
-				print "max_choice = ",max_choice_idx
-				print "Random Chosen Action Flop = ", headers[max_choice_idx]
-
-			else :
-				print "Random Chosen Action Flop = ", headers[max_choice_idx]
+			max_choice_idx = 5
+			# if max_choice == 0 :
+			# 	max_choice_idx = random.randint(0,6)
+			# 	print "max_choice = ",max_choice_idx
+			# 	print "Random Chosen Action Flop = ", headers[max_choice_idx]
+			#
+			print "Random Chosen Action Flop = ", headers[max_choice_idx]
 
 			val,BOT = bot_action(headers[max_choice_idx],flop,BOT)
 
