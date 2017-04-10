@@ -1,12 +1,19 @@
 from handEvaluator import *
 from pokerUI import *
 from handStrength import *
+from knowledgeBase import *
 import variables
 import random
 import sys
 import time
 
 #global variables
+
+csv_flop = "flop_base"
+csv_turn = 'turn_base'
+csv_river = 'river_base'
+
+headers = ['Fold','Check','Call','Bet-1','Bet-2','Bet-5','Bet-7']
 
 image_dir = "Images/"
 png = ".png"
@@ -39,6 +46,32 @@ ui.show()
 #shuffle cards
 def shuffle () :
 	random.shuffle(deck)
+
+#bot on basis of action is updating few values
+def bot_action(action,game_round,BOT) :
+
+	global bot_money
+
+	value = 0
+
+	if action is "Fold" :
+		print "HELLO"
+		BOT = 2
+	elif action is "Call" or "Check":
+		value = max(game_round) - game_round[2]
+	elif action is "Bet-1" :
+		value = max(game_round) + 1
+	elif action is "Bet-2" :
+		value = max(game_round) + 2
+	elif action is "Bet-5" :
+		value = max(game_round) + 5
+	elif action is "Bet-7" :
+		value = max(game_round) + 7
+
+	bot_money -= val
+	print bot_money
+
+	return value,BOT
 
 #skip game as two players have folded
 def skipGame () :
@@ -616,34 +649,44 @@ while (variables.STOP is 0) :
 		if(skipGame() is 1) :
 			break
 
-		ui.BotPlays(app,"Bot is thinking..")
+		if BOT is not 2:
 
-		app.processEvents()
+			ui.BotPlays(app,"Bot is thinking..")
 
-		time.sleep(3)
+			app.processEvents()
 
-		hand_strength = handStrength(bot_cards + community_cards)
+			time.sleep(3)
 
-		if(hand_strength not in flop_base.keys()):
-			act = random.choice(actions)
-			print "Random Chosen Action Flop = ",act
-			money = money - act[1]
-			#perform action
-			#updation of knowledge Base
-			flop_base[hand_strength] = actionValueGenerator(act)
+			hand_strength = handStrength(bot_cards + community_cards)
 
-		else:
-			action_dict = flop_base[hand_strength]
-			max_value = max(action_dict.values())
-			act = 0
-			for action in action_dict:
-				if(action_dict[action] == max_value):
-					act = action
-					break
-			print "Flop Chosen Action = ",act
-			money = money - act[1]
+			max_choice,max_choice_idx,idx = read_file(csv_flop,hand_strength)
 
-		ui.BotPlays(app,"")
+			print hand_strength,max_choice,max_choice_idx,idx
+
+			if max_choice == 0 :
+				max_choice_idx = random.randint(0,6)
+				print "max_choice = ",max_choice_idx
+				print "Random Chosen Action Flop = ", headers[max_choice_idx]
+
+			else :
+				print "Random Chosen Action Flop = ", headers[max_choice_idx]
+
+			val,BOT = bot_action(headers[max_choice_idx],flop,BOT)
+
+			print val,BOT
+
+			pot += val
+			ui.PotMoney(app,str(pot))
+
+			flop[2] += val
+
+			ui.BotMoney(app,str(bot_money))
+
+			ui.BotPlays(app,"Bot has decided to "+headers[max_choice_idx])
+
+			time.sleep(2)
+
+			ui.BotPlays(app,"")
 
 		PLAYERS = [PLAYER1,PLAYER2,BOT]
 		eq = -1
@@ -740,37 +783,39 @@ while (variables.STOP is 0) :
 		if(skipGame() is 1) :
 			break
 
-		ui.BotPlays(app,"Bot is thinking..")
+		if BOT is not 2 :
 
-		app.processEvents()
+			ui.BotPlays(app,"Bot is thinking..")
 
-		time.sleep(3)
+			app.processEvents()
 
-		hand_strength = handStrength(bot_cards + community_cards)
+			time.sleep(3)
 
-		if(hand_strength not in river_base.keys()):
-			act = random.choice(actions)
-			print "Random Chosen Action River = ",act
-			money = money - act[1]
-			#perform action
-			#updation of knowledge Base
-			river_base[hand_strength] = actionValueGenerator(act)
+			hand_strength = handStrength(bot_cards + community_cards)
 
-		else:
-			action_dict = river_base[hand_strength]
-			max_value = max(action_dict.values())
-			act = 0
-			for action in action_dict:
-				if(action_dict[action] == max_value):
-					act = action
-					break
+			if(hand_strength not in river_base.keys()):
+				act = random.choice(actions)
+				print "Random Chosen Action River = ",act
+				money = money - act[1]
+				#perform action
+				#updation of knowledge Base
+				river_base[hand_strength] = actionValueGenerator(act)
 
-			print "River Chosen Action = ",act
-			money = money - act[1]
+			else:
+				action_dict = river_base[hand_strength]
+				max_value = max(action_dict.values())
+				act = 0
+				for action in action_dict:
+					if(action_dict[action] == max_value):
+						act = action
+						break
 
-		time.sleep(2)
+				print "River Chosen Action = ",act
+				money = money - act[1]
 
-		ui.BotPlays(app,"")
+			time.sleep(2)
+
+			ui.BotPlays(app,"")
 		#
 		PLAYERS = [PLAYER1,PLAYER2,BOT]
 		eq = -1
