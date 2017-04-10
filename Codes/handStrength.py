@@ -1,6 +1,5 @@
 from likelihood_prob import *
 from handEvaluator import *
-# from gameArena import *
 
 u_wi = []
 
@@ -38,11 +37,8 @@ def handStrength(hand) :
         p = 1
         for j in range (0,len(hand)) :
             p *= likelihood[hand[j]][i]
-        # print p
         p *= prior_probabilities[i]
-        # print p
         prob_x += p
-    #print "*** ",prob_x
 
     prob_wi_given_x = 0.0
     for i in range (0,10) :
@@ -52,22 +48,16 @@ def handStrength(hand) :
         prob_wi_given_x *= prior_probabilities[i]
         prob_wi_given_x /= prob_x
 
-
-        #print prob_wi_given_x
-
         strength.append(prob_wi_given_x)
 
     max_strength = max(strength)
     max_index = strength.index(max_strength)
 
-    # print max_index
-    #print max_strength,max_index
+
 
     max_hand_index = check_best_hand(hand)
-    #print "mhi = ",max_hand_index
     u_x = u_wi[max_hand_index]
 
-    #print "u_x = ",u_x
 
     prob_p_for_lower_max_index = 0.0
 
@@ -79,14 +69,6 @@ def handStrength(hand) :
         prob_p_for_lower_max_index += prob_wi_given_x
 
 
-    #print "pblm = ",prob_p_for_lower_max_index
-
     s_x = u_x + prob_p_for_lower_max_index
 
     return s_x
-
-
-# hand = ['DA','D10','DJ','DQ','DK','C3','H4']
-# hand = ['DA','HA','C3','DK','SA','C2','HJ']
-# hand = ['D3','H3','C3','S4','H7','S8','H9']
-# print calc_strength(hand)

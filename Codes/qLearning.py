@@ -3,20 +3,6 @@ from knowledgeBase import *
 from handEvaluator import *
 import random
 
-random.shuffle(cards)
-rounds = {0:"preflop",1:"flop",2:"river",3:"turn"}
-
-reward = 20
-
-hand = []
-money = 50
-for i in range(0,2):
-    card = cards[0]
-    hand.append(card)
-    cards.remove(card)
-
-print "Hole Card hand = ",hand
-
 def actionValueGenerator(act):
     action_dict = {}
     for action in actions:
@@ -29,39 +15,10 @@ def actionValueGenerator(act):
     return action_dict
 
 
-
-def drawCards(round_index,hand):
-    if(round_index == 1):
-        for i in range(0,3):
-            card = cards[0]
-            hand.append(card)
-            cards.remove(card)
-
-        return hand
-
-    card = cards[0]
-    hand.append(card)
-    cards.remove(card)
-
-    return hand
-
 for i in range(4):
 
     print "Current round is ========>> %s" %(rounds[i])
 
-    if(i == 0):
-        if(check_best_hand(hand) == 8):
-            bet = 2
-            print "bot bet = ",bet
-            money = money - bet
-        else:
-            bet = 0
-            print "bot bet = ",bet
-
-        continue
-
-    hand = drawCards(i,hand)
-    hand_strength = handStrength(hand)
 
     if(i == 1):
         if(hand_strength not in flop_base.keys()):
