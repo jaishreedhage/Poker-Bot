@@ -13,7 +13,6 @@ csv_flop = "flop_base"
 csv_turn = 'turn_base'
 csv_river = 'river_base'
 
-BOT_WON = 0
 
 headers = ['Fold','Check','Call','Bet-1','Bet-2','Bet-5','Bet-7']
 
@@ -70,7 +69,13 @@ def bot_action(action,game_round,BOT) :
 	elif action == "Bet-7" :
 		value = max(game_round) + 7
 
-	bot_money -= value
+	if(bot_money > 0) :
+		bot_money -= value
+	else:
+		bot_money = buy_in   # the bot buys in more cash as soon as its busted
+		ui.BotPlays(app,"Bot demanded a re-buy of " + str(buy_in))
+		bot_money -= value
+
 	print bot_money,value,game_round
 
 	return value,BOT
@@ -188,6 +193,8 @@ def winner(player1_cards,player2_cards,bot_cards,community_cards) :
 	global p1_money
 	global p2_money
 
+
+
 	print player1_cards,player2_cards,bot_cards,community_cards
 
 	PLAYERS = [PLAYER1,PLAYER2,BOT]
@@ -197,8 +204,8 @@ def winner(player1_cards,player2_cards,bot_cards,community_cards) :
 	player,person = win_between_two_players(player1_cards,player2_cards,community_cards,PLAYER1,PLAYER2)
 	if player is [] :
 		bot_money += pot
-		BOT_WON = 1
 		ui.BotMoney(app,str(bot_money))
+		return 3
 	else :
 		person_temp = person
 		player,person = win_between_two_players(player,bot_cards,community_cards,PLAYERS[person-1],BOT)
@@ -208,6 +215,7 @@ def winner(player1_cards,player2_cards,bot_cards,community_cards) :
 			bot_money += pot
 			BOT_WON = 1
 			ui.BotMoney(app,str(bot_money))
+			return person+1
 		else :
 			print "PLAYER %d won" %person_temp
 			if(person_temp is 1):
@@ -216,6 +224,8 @@ def winner(player1_cards,player2_cards,bot_cards,community_cards) :
 			else :
 				p2_money += pot
 				ui.p2Money(app,str(p2_money))
+
+			return person_temp
 
 	app.processEvents()
 
@@ -386,6 +396,7 @@ while (variables.STOP is 0) :
 	player1_cards = []
 	player2_cards = []
 	community_cards = []
+
 
 	ui.cc1(app,image_dir+"facedown"+png)
 	ui.cc2(app,image_dir+"facedown"+png)
@@ -997,7 +1008,9 @@ while (variables.STOP is 0) :
 
 	person = winner(player1_cards,player2_cards,bot_cards,community_cards)
 
-	if(BOT_WON == 1):
+	print "Person who won is %d" %(person)
+
+	if(person == 3):
 		print "Bot won so updating knowledge base"
 		reward = pot - (preflop[2] + flop[2] + turn[2] + river[2])
 		for csv_file in knowledge_update.keys():
