@@ -3,6 +3,7 @@ from knowledgeBase import *
 from handEvaluator import *
 import random
 
+
 def actionValueGenerator(act):
     action_dict = {}
     for action in actions:
