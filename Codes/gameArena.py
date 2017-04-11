@@ -806,12 +806,14 @@ while (variables.STOP is 0) :
 				max_choice_idx = random.randint(0,6)
 				print "max_choice = ",max_choice_idx
 
+
 			print "Random Chosen Action Turn = ", headers[max_choice_idx]
 
 			val,BOT = bot_action(headers[max_choice_idx],turn,BOT)
 
 			knowledge_update['turn_base'][0] = max_choice_idx
 			knowledge_update['turn_base'][1] = idx
+
 
 			print val,BOT
 
@@ -946,6 +948,7 @@ while (variables.STOP is 0) :
 				max_choice_idx = random.randint(0,6)
 				print "max_choice = ",max_choice_idx
 
+
 			print "Random Chosen Action River = ", headers[max_choice_idx]
 
 			val,BOT = bot_action(headers[max_choice_idx],river,BOT)
@@ -956,6 +959,7 @@ while (variables.STOP is 0) :
 
 			pot += val
 			ui.PotMoney(app,str(pot))
+
 
 			river[2] += val
 
