@@ -53,7 +53,7 @@ FUNCTION NAMES FOR REFERENCE
 ASSUMPTIONS
 
 1. Assuming buy-in is $50. Coz it'll be easier if we start with less money.
-
+ v
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------

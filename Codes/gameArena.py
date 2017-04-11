@@ -13,6 +13,8 @@ csv_flop = "flop_base"
 csv_turn = 'turn_base'
 csv_river = 'river_base'
 
+BOT_WON = 0
+
 headers = ['Fold','Check','Call','Bet-1','Bet-2','Bet-5','Bet-7']
 
 image_dir = "Images/"
@@ -195,6 +197,7 @@ def winner(player1_cards,player2_cards,bot_cards,community_cards) :
 	player,person = win_between_two_players(player1_cards,player2_cards,community_cards,PLAYER1,PLAYER2)
 	if player is [] :
 		bot_money += pot
+		BOT_WON = 1
 		ui.BotMoney(app,str(bot_money))
 	else :
 		person_temp = person
@@ -203,6 +206,7 @@ def winner(player1_cards,player2_cards,bot_cards,community_cards) :
 		if(person is 2):
 			print "PLAYER %d won" %(person+1)
 			bot_money += pot
+			BOT_WON = 1
 			ui.BotMoney(app,str(bot_money))
 		else :
 			print "PLAYER %d won" %person_temp
@@ -671,6 +675,8 @@ while (variables.STOP is 0) :
 			print "Random Chosen Action Flop = ", headers[max_choice_idx]
 
 			val,BOT = bot_action(headers[max_choice_idx],flop,BOT)
+			knowledge_update['flop_base'][0] = max_choice_idx
+			knowledge_update['flop_base'][1] = idx
 
 			print val,BOT
 
@@ -800,16 +806,21 @@ while (variables.STOP is 0) :
 				max_choice_idx = random.randint(0,6)
 				print "max_choice = ",max_choice_idx
 
-			print "Random Chosen Action Flop = ", headers[max_choice_idx]
+
+			print "Random Chosen Action Turn = ", headers[max_choice_idx]
 
 			val,BOT = bot_action(headers[max_choice_idx],turn,BOT)
+
+			knowledge_update['turn_base'][0] = max_choice_idx
+			knowledge_update['turn_base'][1] = idx
+
 
 			print val,BOT
 
 			pot += val
 			ui.PotMoney(app,str(pot))
 
-			flop[2] += val
+			turn[2] += val
 
 			ui.BotMoney(app,str(bot_money))
 
@@ -937,16 +948,20 @@ while (variables.STOP is 0) :
 				max_choice_idx = random.randint(0,6)
 				print "max_choice = ",max_choice_idx
 
-			print "Random Chosen Action Flop = ", headers[max_choice_idx]
+
+			print "Random Chosen Action River = ", headers[max_choice_idx]
 
 			val,BOT = bot_action(headers[max_choice_idx],river,BOT)
+			knowledge_update['river_base'][0] = max_choice_idx
+			knowledge_update['river_base'][1] = idx
 
 			print val,BOT
 
 			pot += val
 			ui.PotMoney(app,str(pot))
 
-			flop[2] += val
+
+			river[2] += val
 
 			ui.BotMoney(app,str(bot_money))
 
@@ -986,6 +1001,17 @@ while (variables.STOP is 0) :
 
 	person = winner(player1_cards,player2_cards,bot_cards,community_cards)
 
+	if(BOT_WON == 1):
+		print "Bot won so updating knowledge base"
+		reward = pot - (preflop[2] + flop[2] + turn[2] + river[2])
+		for csv_file in knowledge_update.keys():
+			write_file(csv_file,reward)
+
+	else :
+		print "bot lost so updating knowledge base"
+		reward = -(preflop[2] + flop[2] + turn[2] + river[2])
+		for csv_file in knowledge_update.keys():
+			write_file(csv_file,reward)
 
 	app.processEvents()
 
