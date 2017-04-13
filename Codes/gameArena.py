@@ -13,6 +13,8 @@ csv_flop = "flop_base"
 csv_turn = 'turn_base'
 csv_river = 'river_base'
 
+bot_preflop_raise = 0
+
 
 headers = ['Fold','Check','Call','Bet-1','Bet-2','Bet-5','Bet-7']
 
@@ -243,18 +245,21 @@ def bot(bot_cards,community_cards) :
 	print best_hand, best_card , high_card
 
 
-def bot_preflop(bot_cards) :
+def bot_preflop(bot_cards,preflop) :
 
 	global bot_money
+	global bot_preflop_raise
 
 	bet = 2
 	value = 0
+	if bot_preflop_raise == 1:
+		return value
 
-	if(check_best_hand(bot_cards) == 8):
+	if(onePair(bot_cards) != []):
 		value = max(preflop) + bet
 		bot_money -= value
+		bot_preflop_raise = 1
 
-	print value, bot_money
 	return value
 
 
@@ -391,6 +396,8 @@ while (variables.STOP is 0) :
 	BOT = 0
 
 	pot = 0
+
+	bot_preflop_raise = 0
 
 	bot_cards = []
 	player1_cards = []
@@ -534,7 +541,7 @@ while (variables.STOP is 0) :
 		time.sleep(3)
 
 		BOTCHECK = 0
-		val = bot_preflop(bot_cards)
+		val = bot_preflop(bot_cards,preflop)
 		print val
 		if val is 0	:
 			val = max(preflop) - preflop[2]
@@ -551,7 +558,7 @@ while (variables.STOP is 0) :
 			ui.BotPlays(app,"Bot decides to check")
 
 		else :
-			ui.BotPlays(app,"Bot decides to raise "+ val)
+			ui.BotPlays(app,"Bot decides to raise "+ str(val))
 
 		app.processEvents()
 
@@ -700,9 +707,13 @@ while (variables.STOP is 0) :
 
 			ui.BotPlays(app,"Bot has decided to "+headers[max_choice_idx])
 
+			app.processEvents()
+
 			time.sleep(2)
 
 			ui.BotPlays(app,"")
+
+			app.processEvents()
 
 		PLAYERS = [PLAYER1,PLAYER2,BOT]
 		eq = -1
@@ -796,6 +807,8 @@ while (variables.STOP is 0) :
 		ui.p1OptionsHideShow(app,False)
 		ui.p2OptionsHideShow(app,False)
 
+		app.processEvents()
+
 		if(skipGame() is 1) :
 			break
 
@@ -837,9 +850,13 @@ while (variables.STOP is 0) :
 
 			ui.BotPlays(app,"Bot has decided to "+headers[max_choice_idx])
 
+			app.processEvents()
+
 			time.sleep(2)
 
 			ui.BotPlays(app,"")
+
+			app.processEvents()
 
 		#
 		PLAYERS = [PLAYER1,PLAYER2,BOT]
@@ -892,6 +909,8 @@ while (variables.STOP is 0) :
 		ui.p1OptionsHideShow(app,True)
 		ui.p2OptionsHideShow(app,False)
 
+		app.processEvents()
+
 		if(skipGame() is 1) :
 			break
 
@@ -937,6 +956,8 @@ while (variables.STOP is 0) :
 		ui.p1OptionsHideShow(app,False)
 		ui.p2OptionsHideShow(app,False)
 
+		app.processEvents()
+
 		if(skipGame() is 1) :
 			break
 
@@ -978,9 +999,13 @@ while (variables.STOP is 0) :
 
 			ui.BotPlays(app,"Bot has decided to "+headers[max_choice_idx])
 
+			app.processEvents()
+
 			time.sleep(2)
 
 			ui.BotPlays(app,"")
+
+			app.processEvents()
 
 
 
