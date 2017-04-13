@@ -31,8 +31,12 @@ def write_file(csv_file,idx,head) :
     csv_file += file_extn
 
     df = pd.read_csv(csv_file)
-    df.set_value(idx, headers[head],240)
-    df.to_csv(csv_file, index=False)
+
+    idx = knowledge_update[csv_key][1]
+    col = headers[knowledge_update[csv_key][0]]
+
+    df.set_value(idx,col,reward)
+    df.to_csv(csv_file,index=False)
 
 #
 # read_file(csv_flop,500)
