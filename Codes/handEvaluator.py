@@ -187,7 +187,7 @@ def flush (hand) :
 def royalFlush (hand) :
 	royal_flush = 'null'
 	flush_suit = flush(hand)
-	print flush_suit
+	# print flush_suit
 	if (flush_suit == []) :
 		return royal_flush
 	else :
@@ -211,7 +211,7 @@ def royalFlush (hand) :
 #handling seperately the case for the straight between [10 J Q K A] seperately
 
 def straight(hand) :
-	
+
     hand = list(set(hand))
     #print "given hand = ",hand
     spl_hand = sorted(hand,key = lambda x : card_rank[''.join((list(x))[1:])],reverse = True) #list declared in order to seperately handle [10 J Q K A]

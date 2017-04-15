@@ -5,7 +5,9 @@ file_extn = ".csv"
 headers = ['Fold','Check','Call','Bet-1','Bet-2','Bet-5','Bet-7']
 index = [0,200,500,2000,10000]
 
-def read_file(csv_file,hand_strength) :
+knowledge_update = {"flop_base" : [0,0] , "turn_base" : [0,0] ,"river_base" : [0,0] }
+
+def read_file(csv_file,hand_strength,length) :
 
     csv_file += file_extn
 
@@ -18,7 +20,7 @@ def read_file(csv_file,hand_strength) :
 
     df = pd.read_csv(csv_file)
     choice = []
-    for i in range (0,7) :
+    for i in range (0,length+1) :
         choice.append(df[ headers[i] ][idx])
 
     max_choice = max(choice)
@@ -26,8 +28,9 @@ def read_file(csv_file,hand_strength) :
 
     return max_choice,max_choice_idx,idx            #returning value,column and row
 
-def write_file(csv_file,idx,head) :
+def write_file(csv_file,reward) :
 
+    csv_key = csv_file
     csv_file += file_extn
 
     df = pd.read_csv(csv_file)

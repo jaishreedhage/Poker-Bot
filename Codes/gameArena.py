@@ -213,13 +213,11 @@ def winner(player1_cards,player2_cards,bot_cards,community_cards) :
 		player,person = win_between_two_players(player,bot_cards,community_cards,PLAYERS[person-1],BOT)
 		print player
 		if(person is 2):
-			print "PLAYER %d won" %(person+1)
 			bot_money += pot
 			BOT_WON = 1
 			ui.BotMoney(app,str(bot_money))
 			return person+1
 		else :
-			print "PLAYER %d won" %person_temp
 			if(person_temp is 1):
 				p1_money += pot
 				ui.p1Money(app,str(p1_money))
@@ -466,6 +464,8 @@ while (variables.STOP is 0) :
 
 	preflop = [0]*3
 
+	no_of_bot_raise = 0
+
 	#variables to handle some cases -> one bot folds other bot should know, handling call/check and bet/raise
 	flag = 0
 	callCheck = -1     #to handle bigger case of call/check and bet/raise...presently it isnt taken into account
@@ -541,7 +541,11 @@ while (variables.STOP is 0) :
 		time.sleep(3)
 
 		BOTCHECK = 0
-		val = bot_preflop(bot_cards,preflop)
+
+		if no_of_bot_raise >= 2:
+			val = 0
+		else :
+			val = bot_preflop(bot_cards,preflop)
 		print val
 		if val is 0	:
 			val = max(preflop) - preflop[2]
@@ -558,6 +562,7 @@ while (variables.STOP is 0) :
 			ui.BotPlays(app,"Bot decides to check")
 
 		else :
+			no_of_bot_raise = no_of_bot_raise + 1
 			ui.BotPlays(app,"Bot decides to raise "+ str(val))
 
 		app.processEvents()
@@ -615,6 +620,8 @@ while (variables.STOP is 0) :
 
 
 	flop = [0]*3
+
+	no_of_bot_raise = 0
 
 	while(True) :
 
@@ -682,13 +689,20 @@ while (variables.STOP is 0) :
 
 			hand_strength = handStrength(bot_cards + community_cards)
 
-			max_choice,max_choice_idx,idx = read_file(csv_flop,hand_strength)
+			max_choice,max_choice_idx,idx = read_file(csv_flop,hand_strength,6)
 
 			print hand_strength,max_choice,max_choice_idx,idx
 
 			if max_choice == 0 :
 				max_choice_idx = random.randint(0,6)
 				print "max_choice = ",max_choice_idx
+
+			if no_of_bot_raise >= 2 :
+				max_choice,max_choice_idx,idx = read_file(csv_flop,hand_strength,2)
+				print "no of bot raises ",no_of_bot_raise
+
+			if max_choice_idx >= 3 and max_choice_idx<=6 :
+				no_of_bot_raise = no_of_bot_raise + 1
 
 			print "Random Chosen Action Flop = ", headers[max_choice_idx]
 
@@ -755,6 +769,8 @@ while (variables.STOP is 0) :
 	print PLAYER1 , PLAYER2
 
 	turn = [0]*3
+
+	no_of_bot_raise = 0
 	#
 	while(True) :
 		ui.setP1Opt(app,1)
@@ -822,13 +838,20 @@ while (variables.STOP is 0) :
 
 			hand_strength = handStrength(bot_cards + community_cards)
 
-			max_choice,max_choice_idx,idx = read_file(csv_turn,hand_strength)
+			max_choice,max_choice_idx,idx = read_file(csv_turn,hand_strength,6)
 
 			print hand_strength,max_choice,max_choice_idx,idx
 
 			if max_choice == 0 :
 				max_choice_idx = random.randint(0,6)
 				print "max_choice = ",max_choice_idx
+
+			if no_of_bot_raise >= 2 :
+				max_choice,max_choice_idx,idx = read_file(csv_flop,hand_strength,2)
+				print "no of bot raises ",no_of_bot_raise
+
+			if max_choice_idx >= 3 and max_choice_idx<=6 :
+				no_of_bot_raise = no_of_bot_raise + 1
 
 
 			print "Random Chosen Action Turn = ", headers[max_choice_idx]
@@ -902,6 +925,9 @@ while (variables.STOP is 0) :
 	app.processEvents()
 	#
 	river = [0] * 3
+
+	no_of_bot_raise = 0
+
 	#
 	while(True) :
 		ui.setP1Opt(app,1)
@@ -972,13 +998,20 @@ while (variables.STOP is 0) :
 
 			hand_strength = handStrength(bot_cards + community_cards)
 
-			max_choice,max_choice_idx,idx = read_file(csv_river,hand_strength)
+			max_choice,max_choice_idx,idx = read_file(csv_river,hand_strength,6)
 
 			print hand_strength,max_choice,max_choice_idx,idx
 
 			if max_choice == 0 :
 				max_choice_idx = random.randint(0,6)
 				print "max_choice = ",max_choice_idx
+
+			if no_of_bot_raise >= 2 :
+				max_choice,max_choice_idx,idx = read_file(csv_river,hand_strength,2)
+				print "no of bot raises ",no_of_bot_raise
+
+			if max_choice_idx >= 3 and max_choice_idx<=6 :
+				no_of_bot_raise = no_of_bot_raise + 1
 
 
 			print "Random Chosen Action River = ", headers[max_choice_idx]
@@ -1037,7 +1070,7 @@ while (variables.STOP is 0) :
 
 	person = winner(player1_cards,player2_cards,bot_cards,community_cards)
 
-	print "Person who won is %d" %(person)
+	print "Person %d won" %(person)
 
 	if(person == 3):
 		print "Bot won so updating knowledge base"
