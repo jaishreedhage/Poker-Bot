@@ -1,4 +1,5 @@
 https://www.pagat.com/poker/rules/ranking.html      -- card info
+https://www.quora.com/How-can-one-apply-machine-learning-to-poker   --- quora
 ------------------------------------------------------------------------------------------------------------------------------------------
 E:\Python27\Lib\site-packages\PyQt4\pyuic4.bat -x C:\Users\Jaishree\Documents\p1\mainwindow.ui -o  C:\Users\Jaishree\Documents\p1\op.py
 ------------------------------------------------------------------------------------------------------------------------------------------

@@ -58,7 +58,6 @@ def bot_action(action,game_round,BOT) :
 	value = 0
 
 	if action == "Fold" :
-		print "HELLO"
 		BOT = 2
 	elif action == "Call" or action == "Check":
 		value = max(game_round) - game_round[2]
@@ -77,8 +76,6 @@ def bot_action(action,game_round,BOT) :
 		bot_money = buy_in   # the bot buys in more cash as soon as its busted
 		ui.BotPlays(app,"Bot demanded a re-buy of " + str(buy_in))
 		bot_money -= value
-
-	print bot_money,value,game_round
 
 	return value,BOT
 
@@ -211,7 +208,6 @@ def winner(player1_cards,player2_cards,bot_cards,community_cards) :
 	else :
 		person_temp = person
 		player,person = win_between_two_players(player,bot_cards,community_cards,PLAYERS[person-1],BOT)
-		print player
 		if(person is 2):
 			bot_money += pot
 			BOT_WON = 1
@@ -288,15 +284,15 @@ def player1(round,PLAYER1) :
 				variables.P1FOLD = 0
 			elif(variables.P1BETRAISE is 1) :
 				value = int(ui.player1bet.text())
-				print value
+				# print value
 				p1_money = p1_money - value
-				print p1_money
+				# print p1_money
 				variables.P1BETRAISE = 0
 			else :
 				#take into account the different rounds
 				value = max(preflop) - preflop[0]
 				p1_money = p1_money - value
-				print p1_money
+				# print p1_money
 				variables.P1CALLCHECK = 0
 
 		# print p1_money
@@ -317,9 +313,9 @@ def player1(round,PLAYER1) :
 			variables.P1FOLD = 0
 		elif(variables.P1BETRAISE is 1) :
 			value = int(ui.player1bet.text())
-			print value
+			# print value
 			p1_money = p1_money - value
-			print p1_money
+			# print p1_money
 			variables.P1BETRAISE = 0
 		else :
 			#take into account the different rounds
@@ -329,9 +325,9 @@ def player1(round,PLAYER1) :
 				value = max(turn) - turn[0]
 			else :
 				value = max(river) - river[0]
-			print value
+			# print value
 			p1_money = p1_money - value
-			print p1_money
+			# print p1_money
 			variables.P1CALLCHECK = 0
 
 	return value,PLAYER1
@@ -356,10 +352,10 @@ def player2(round,PLAYER2) :
 			variables.P2FOLD = 0
 		elif(variables.P2BETRAISE is 1) :
 			value = int(ui.player2bet.text())
-			print value
+			# print value
 			global p2_money
 			p2_money = p2_money - value
-			print p2_money
+			# print p2_money
 			variables.P2BETRAISE = 0
 		else :
 			#take into account the different rounds
@@ -371,9 +367,9 @@ def player2(round,PLAYER2) :
 				value = max(turn) - turn[1]
 			else :
 				value = max(river) - river[1]
-			print value
+			# print value
 			p2_money = p2_money - value
-			print p2_money
+			# print p2_money
 			variables.P2CALLCHECK = 0
 
 	return value,PLAYER2
@@ -546,7 +542,7 @@ while (variables.STOP is 0) :
 			val = 0
 		else :
 			val = bot_preflop(bot_cards,preflop)
-		print val
+		# print val
 		if val is 0	:
 			val = max(preflop) - preflop[2]
 			BOTCHECK = 1
@@ -582,11 +578,11 @@ while (variables.STOP is 0) :
 				break
 
 		if stopPreflop is 1 :
-			print "THEY ARE ALL EQUAL"
+			print "ALL BETS ARE EQUAL"
 			break
 
 		else :
-			print "NO THEY ARENT EQUAL"
+			print "ALL BETS ARE NOT EQUAL"
 
 
 	if(variables.STOP is 1) :
@@ -691,7 +687,7 @@ while (variables.STOP is 0) :
 
 			max_choice,max_choice_idx,idx = read_file(csv_flop,hand_strength,6)
 
-			print hand_strength,max_choice,max_choice_idx,idx
+			print "HAND STRENGTH = ",hand_strength
 
 			if max_choice == 0 :
 				max_choice_idx = random.randint(0,6)
@@ -710,7 +706,7 @@ while (variables.STOP is 0) :
 			knowledge_update['flop_base'][0] = max_choice_idx
 			knowledge_update['flop_base'][1] = idx
 
-			print val,BOT
+			# print val,BOT
 
 			pot += val
 			ui.PotMoney(app,str(pot))
@@ -840,7 +836,7 @@ while (variables.STOP is 0) :
 
 			max_choice,max_choice_idx,idx = read_file(csv_turn,hand_strength,6)
 
-			print hand_strength,max_choice,max_choice_idx,idx
+			print "HAND STRENGTH = ",hand_strength
 
 			if max_choice == 0 :
 				max_choice_idx = random.randint(0,6)
@@ -862,7 +858,7 @@ while (variables.STOP is 0) :
 			knowledge_update['turn_base'][1] = idx
 
 
-			print val,BOT
+			# print val,BOT
 
 			pot += val
 			ui.PotMoney(app,str(pot))
@@ -1000,7 +996,7 @@ while (variables.STOP is 0) :
 
 			max_choice,max_choice_idx,idx = read_file(csv_river,hand_strength,6)
 
-			print hand_strength,max_choice,max_choice_idx,idx
+			print "HAND STRENGTH = ",hand_strength
 
 			if max_choice == 0 :
 				max_choice_idx = random.randint(0,6)
@@ -1020,7 +1016,7 @@ while (variables.STOP is 0) :
 			knowledge_update['river_base'][0] = max_choice_idx
 			knowledge_update['river_base'][1] = idx
 
-			print val,BOT
+			# print val,BOT
 
 			pot += val
 			ui.PotMoney(app,str(pot))
